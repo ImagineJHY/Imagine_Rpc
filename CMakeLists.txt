@@ -6,8 +6,10 @@ project(IMAGINE_RPC)
 # 若未定义, 则当前project作为mainModule
 if(NOT DEFINED IS_MAKE_PROJECT)
     message("[Constructing LIB][Imagine Rpc]: Starting Imagine_Rpc lib building, lib name is ${PROJECT_NAME}...")
+    set(TARGET_LIB "Imagine_Rpc")
     set(IS_MAKE_PROJECT false)
     set(IMAGINE_SYSTEM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/Imagine_System)
+    set(IMAGINE_LIB_WORKER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/Imagine_System/worker)
     set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
     
     if(EXISTS ${IMAGINE_SYSTEM_DIR}/CMakeLists.txt)
@@ -22,7 +24,7 @@ endif()
 
 # 若当前的任务是编译动态库, 则构建TARGET: init, prepare, build
 # 若当前的任务是生成项目, 则不构建上述TARGET
-if(NOT ${IS_MAKE_PROJECT})
+if(NOT ${IS_MAKE_PROJECT} AND DEFINED TARGET_LIB AND ${TARGET_LIB} STREQUAL "Imagine_Rpc")
     add_custom_target(
         init
         COMMAND python3 init.py
@@ -47,9 +49,9 @@ if(NOT ${IS_MAKE_PROJECT})
     )
     add_dependencies(build imagine_rpc)
 else()
-    message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target init is not build...")
-    message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target prepare is not build...")
-    message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target build is not build...")
+    # message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target init is not build...")
+    # message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target prepare is not build...")
+    # message("[Constructing PROJECT][Imagine Rpc]: Imagine_Rpc lib target build is not build...")
 endif()
 
 # 设置动态库的TARGET的头文件, 源文件, 依赖
