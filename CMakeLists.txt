@@ -57,3 +57,7 @@ file(GLOB IMAGINE_RPC_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_library(imagine_rpc SHARED ${IMAGINE_RPC_SRC_LIST})
 target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(imagine_rpc pthread)
+
+if(TARGET imagine_zookeeper)
+    target_link_libraries(imagine_rpc imagine_zookeeper)
+endif()
