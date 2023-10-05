@@ -6,11 +6,12 @@
 
 
 # thirdparty
-/thirdparty/Imagine_System/
+/thirdparty
 
 # lib
 *.bak
 *.so*
+*.a
 
 # vs
 .vscode
