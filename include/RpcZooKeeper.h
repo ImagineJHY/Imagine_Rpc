@@ -29,7 +29,7 @@ class RpcZooKeeper : public ZooKeeper
     {
      public:
         RpcZKHeart(const std::string &cluster_name, const std::string &stat, long long timerfd, long long time = TimeUtil::GetNow())
-            : cluster_name_(cluster_name), znode_stat_(stat), timerfd_(timerfd), last_request_time_(time) {}
+            : timerfd_(timerfd), last_request_time_(time), cluster_name_(cluster_name), znode_stat_(stat) {}
 
         bool ReSetLastRequestTime()
         {

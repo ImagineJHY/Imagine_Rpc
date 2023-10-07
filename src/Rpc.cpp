@@ -18,7 +18,7 @@ std::string Rpc::Serialize(const std::vector<std::string> &input)
         if (!(input[i].size())) {
             continue;
         }
-        for (int j = 0; j < input[i].size(); j++) {
+        for (size_t j = 0; j < input[i].size(); j++) {
             if (0 < j && input[i][j] == '\n' && input[i][j - 1] == '\r') {
                 output += "\n\r";
             }
@@ -36,7 +36,7 @@ std::vector<std::string> Rpc::Deserialize(const std::string &input, int num)
         -num用于表示应当接收的最少的字段数
             -num为0表示不作检查
     */
-    int idx = 0;
+    // int idx = 0;
     int size = input.size();
     std::vector<std::string> output;
 
@@ -104,7 +104,7 @@ int Rpc::StringToInt(const std::string &input)
 
 bool Rpc::IsComplete(const std::vector<std::string> &output, int num)
 {
-    if (output.size() < num) {
+    if (output.size() < static_cast<size_t>(num)) {
         return false;
     }
 

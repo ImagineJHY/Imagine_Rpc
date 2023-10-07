@@ -237,7 +237,7 @@ void RpcServer::Callee(const std::string &method, RpcCallback callback)
 
 bool RpcServer::Register(const std::string &method, const std::string &keeper_ip, const std::string &keeper_port)
 {
-    struct sockaddr_in addr = Rpc::PackIpPort(keeper_ip, keeper_port);
+    // struct sockaddr_in addr = Rpc::PackIpPort(keeper_ip, keeper_port);
     // struct sockaddr_in addr=Rpc::PackIpPort(keeper_ip,keeper_port);
     std::string content = GenerateDefaultRpcKeeperContent("Register", method);
     std::string head = Rpc::GenerateDefaultHead(content);

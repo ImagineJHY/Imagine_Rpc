@@ -51,7 +51,7 @@ void RpcZooKeeper::SetDefaultReadCallback()
             */
 
             // 找到函数,设置Watcher,目前设定默认都需要set_watcher
-            struct sockaddr_in *addr = Rpc::GetAddr(input_iovec);
+            // struct sockaddr_in *addr = Rpc::GetAddr(input_iovec);
             // std::shared_ptr<RpcWatcher> new_watcher=std::make_shared<RpcWatcher>(Rpc::ConvertIpFromNetToString(addr->sin_addr.s_addr),Rpc::ConvertPortFromNetToString(addr->sin_port));
 
             // std::string output=this->SearchMethod(de_input[2],new_watcher);
