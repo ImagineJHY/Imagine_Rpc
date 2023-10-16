@@ -1,4 +1,5 @@
-#include "RpcClient.h"
+#include "Imagine_Rpc/RpcClient.h"
+
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -27,7 +28,7 @@ std::vector<std::string> RpcClient::Caller(const std::string &method, const std:
 
     std::vector<std::string> recv_addr = Rpc::Deserialize(server_addr);
     if (recv_addr[1] == "Failure") {
-        printf("没有找到函数!\n");
+        LOG_INFO("没有找到函数!");
         throw std::exception();
     }
 
@@ -67,7 +68,7 @@ bool RpcClient::CallerOne(const std::string &method, const std::string &keeper_i
     std::string server_addr = Rpc::Communicate(head + content, &addr, true); // 得到ip和端口号
     std::vector<std::string> recv_addr = Rpc::Deserialize(server_addr);
     if (recv_addr[1] == "Failure") {
-        printf("没有找到函数!\n");
+        LOG_INFO("没有找到函数!");
         throw std::exception();
     }
     server_ip = recv_addr[1];

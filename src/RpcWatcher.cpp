@@ -1,6 +1,6 @@
-#include "RpcWatcher.h"
-#include "Rpc.h"
-#include "RpcClient.h"
+#include "Imagine_Rpc/RpcWatcher.h"
+#include "Imagine_Rpc/Rpc.h"
+#include "Imagine_Rpc/RpcClient.h"
 
 using namespace Imagine_Rpc;
 

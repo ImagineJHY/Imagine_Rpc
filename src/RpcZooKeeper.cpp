@@ -1,6 +1,6 @@
-#include "RpcZooKeeper.h"
+#include "Imagine_Rpc/RpcZooKeeper.h"
 
-#include "Rpc.h"
+#include "Imagine_Rpc/Rpc.h"
 
 using namespace Imagine_Rpc;
 
@@ -18,7 +18,7 @@ RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, Event
         throw std::exception();
     }
 
-    loop_ = new EventLoop(Rpc::StringToInt(port), max_request_num, read_callback, write_callback, communicate_callback);
+    loop_ = new EventLoop(Rpc::StringToInt(port), 5, max_request_num, read_callback, write_callback, communicate_callback);
 }
 
 RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, double time_out, int max_request_num)
@@ -29,7 +29,7 @@ RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, doubl
     SetDefaultCommunicateCallback();
     SetDefaultTimerCallback();
 
-    loop_ = new EventLoop(Rpc::StringToInt(port), max_request_num, read_callback_, write_callback_);
+    loop_ = new EventLoop(Rpc::StringToInt(port), 5, max_request_num, read_callback_, write_callback_);
 }
 
 void RpcZooKeeper::SetDefaultReadCallback()
@@ -38,7 +38,7 @@ void RpcZooKeeper::SetDefaultReadCallback()
     read_callback_ = [this](const struct iovec *input_iovec)
     {
         int sockfd = *(int *)input_iovec[0].iov_base;
-        printf("this is RpcZooKeeper!\n");
+        LOG_INFO("this is RpcZooKeeper!");
         std::string input = Rpc::GetIovec(input_iovec);
 
         // 解析数据
@@ -72,7 +72,7 @@ void RpcZooKeeper::SetDefaultReadCallback()
             */
             if (de_input[2] == "online") {
                 // 心跳检测包,返回成功即可,暂不处理各种异常
-                printf("RpcZooKeeper Receive online!\n");
+                LOG_INFO("RpcZooKeeper Receive online!");
                 pthread_mutex_lock(&heart_map_lock_);
                 heart_map_.find(sockfd)->second->ReSetLastRequestTime();
                 pthread_mutex_unlock(&heart_map_lock_);
@@ -111,7 +111,7 @@ void RpcZooKeeper::SetDefaultReadCallback()
             }
         } else {
             // 错误的数据
-            printf("小老板逮到!\n");
+            LOG_INFO("小老板逮到!");
             struct iovec *output_iovec = Rpc::SetIovec(Rpc::GenerateDefaultFailureMessage(), 12, false);
 
             return output_iovec;
@@ -152,7 +152,7 @@ void RpcZooKeeper::SetDefaultTimerCallback()
 {
     timer_callback_ = [this](int sockfd, double time_out)
     {
-        printf("RpcZooKeeper TimerCallback!\n");
+        LOG_INFO("RpcZooKeeper TimerCallback!");
 
         std::string cluster_name;
         long long last_request_time;
@@ -162,9 +162,9 @@ void RpcZooKeeper::SetDefaultTimerCallback()
         }
         std::vector<std::string> addr = Rpc::Deserialize(stat);
 
-        if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
+        if (Imagine_Tool::TimeUtil::GetNow() > Imagine_Tool::TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            printf("RpcZooKeeper Timer Set offline!\n");
+            LOG_INFO("RpcZooKeeper Timer Set offline!");
             this->loop_->Closefd(sockfd);
             DeRegister(cluster_name, addr[0], addr[1], sockfd);
             return;

@@ -1,9 +1,10 @@
-#include "RpcServer.h"
+#include "Imagine_Rpc/RpcServer.h"
 
 #include <sys/uio.h>
 #include <cstdarg>
 
-using namespace Imagine_Rpc;
+namespace Imagine_Rpc
+{
 
 RpcServer::RpcServer(const std::string &ip, const std::string &port, const std::string &keeper_ip, const std::string &keeper_port, int max_client_num)
                      : ip_(ip), port_(port), keeper_ip_(keeper_ip), keeper_port_(keeper_port)
@@ -31,7 +32,7 @@ RpcServer::RpcServer(const std::string &ip, const std::string &port, const std::
 
     SetDefaultTimerCallback();
 
-    loop_ = new EventLoop(temp_port, max_client_num, read_callback_, write_callback_, communicate_callback_);
+    loop_ = new Imagine_Muduo::EventLoop(temp_port, 5, max_client_num, read_callback_, write_callback_, communicate_callback_);
 }
 
 RpcServer::RpcServer(const std::string &ip, const std::string &port, std::unordered_map<std::string, RpcCallback> callbacks, const std::string &keeper_ip, const std::string &keeper_port, int max_client_num)
@@ -59,7 +60,7 @@ RpcServer::RpcServer(const std::string &ip, const std::string &port, std::unorde
 
     SetDefaultTimerCallback();
 
-    loop_ = new EventLoop(temp_port, max_client_num, read_callback_, write_callback_, communicate_callback_);
+    loop_ = new EventLoop(temp_port, 5, max_client_num, read_callback_, write_callback_, communicate_callback_);
 
     callback_num_ = callbacks.size();
     pthread_mutex_lock(&callback_lock_);
@@ -92,7 +93,7 @@ void RpcServer::SetDefaultReadCallback()
 {
     read_callback_ = [this](const struct iovec *input_iovec)
     {
-        printf("this is RpcServer : %s\n", &(ip_ + port_)[0]);
+        LOG_INFO("this is RpcServer : %s", &(ip_ + port_)[0]);
 
         std::string input = Rpc::GetIovec(input_iovec);
 
@@ -164,9 +165,9 @@ void RpcServer::SetDefaultTimerCallback()
             return;
         }
 
-        if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
+        if (Imagine_Tool::TimeUtil::GetNow() > Imagine_Tool::TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            printf("RpcServer Timer Set offline!\n");
+            LOG_INFO("RpcServer Timer Set offline!");
             this->loop_->Closefd(sockfd);
             this->DeleteUser(sockfd);
             return;
@@ -245,7 +246,7 @@ bool RpcServer::Register(const std::string &method, const std::string &keeper_ip
     while (1) {
         if (Rpc::Connect(keeper_ip, keeper_port, &sockfd)) {
             if (Rpc::Deserialize(Rpc::Communicate(head + content, &sockfd))[1] == "Success") {
-                printf("Server %s Register Success!\n", &(ip_ + port_)[0]);
+                LOG_INFO("Server %s Register Success!", &(ip_ + port_)[0]);
                 Rpc::DefaultKeepAliveClient(loop_, std::bind(&Rpc::DefaultClientTimerCallback, sockfd, method, nullptr));
 
                 return true;
@@ -253,11 +254,11 @@ bool RpcServer::Register(const std::string &method, const std::string &keeper_ip
                 close(sockfd);
             }
         }
-        printf("Register unsuccess!try again after 5 second!\n");
+        LOG_INFO("Register unsuccess!try again after 5 second!");
         sleep(5);
     }
 
-    printf("Register exception!\n");
+    LOG_INFO("Register exception!");
     throw std::exception();
 
     return false;
@@ -271,11 +272,11 @@ bool RpcServer::DeRegister(const std::string &method, const std::string &keeper_
     std::string content = GenerateDefaultRpcKeeperContent("DeRegister", method);
     std::string head = Rpc::GenerateDefaultHead(content);
     if (Rpc::Deserialize(Rpc::Communicate(head + content, &addr, true), 0)[1] == "Success") {
-        printf("Server %s Deregister Success!\n", &(ip_ + port_)[0]);
+        LOG_INFO("Server %s Deregister Success!", &(ip_ + port_)[0]);
         return true;
     }
 
-    printf("DeRegister exception!\n");
+    LOG_INFO("DeRegister exception!");
     throw std::exception();
 
     return false;
@@ -292,7 +293,7 @@ RpcCallback RpcServer::SearchFunc(std::string method)
     auto it = callbacks_.find(method);
     if (it == callbacks_.end()) {
         // 没找到
-        printf("SearchFunc exception!\n");
+        LOG_INFO("SearchFunc exception!");
         throw std::exception();
     }
     auto callback = it->second;
@@ -340,3 +341,5 @@ long long RpcServer::GetHeartNodeLastRequestTime(int sockfd)
 
     return last_request_time;
 }
+
+} // namespace Imagine_Rpc
