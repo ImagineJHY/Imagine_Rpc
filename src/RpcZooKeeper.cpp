@@ -2,10 +2,26 @@
 
 #include "Imagine_Rpc/Rpc.h"
 
-using namespace Imagine_Rpc;
+namespace Imagine_Rpc
+{
+
+RpcZooKeeper::RpcZooKeeper()
+{
+}
+
+RpcZooKeeper::RpcZooKeeper(std::string profile_path) : ZooKeeper(profile_path)
+{
+    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    SetDefaultCallback();
+
+    loop_ = new EventLoop(muduo_profile_name_);
+}
 
 RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, EventCallback read_callback, EventCallback write_callback, EventCommunicateCallback communicate_callback, double time_out, int max_request_num)
-                         : ZooKeeper(Rpc::StringToInt(port), max_request_num, read_callback, write_callback, communicate_callback), ip_(ip), port_(port), time_out_(time_out)
+                         : ZooKeeper(Rpc::StringToInt(port), max_request_num, read_callback, write_callback, communicate_callback), time_out_(time_out)
 {
     if (!read_callback_) {
         SetDefaultReadCallback();
@@ -22,7 +38,7 @@ RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, Event
 }
 
 RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, double time_out, int max_request_num)
-                         : ZooKeeper(Rpc::StringToInt(port), max_request_num, nullptr, nullptr, nullptr), ip_(ip), port_(port), time_out_(time_out)
+                         : ZooKeeper(Rpc::StringToInt(port), max_request_num, nullptr, nullptr, nullptr), time_out_(time_out)
 {
     SetDefaultReadCallback();
     SetDefaultWriteCallback();
@@ -30,6 +46,21 @@ RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, doubl
     SetDefaultTimerCallback();
 
     loop_ = new EventLoop(Rpc::StringToInt(port), 5, max_request_num, read_callback_, write_callback_);
+}
+
+void RpcZooKeeper::Init(std::string profile_name)
+{
+    ZooKeeper::Init(profile_name);
+
+    SetDefaultCallback();
+}
+
+void RpcZooKeeper::SetDefaultCallback()
+{
+    SetDefaultReadCallback();
+    SetDefaultWriteCallback();
+    SetDefaultCommunicateCallback();
+    SetDefaultTimerCallback();
 }
 
 void RpcZooKeeper::SetDefaultReadCallback()
@@ -269,3 +300,5 @@ long long RpcZooKeeper::GetHeartNodeLastRequestTime(int sockfd)
 
     return last_request_time;
 }
+
+} // namespace Imagine_Rpc

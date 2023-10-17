@@ -4,7 +4,7 @@
 #include "Imagine_Muduo/EventLoop.h"
 #include "Imagine_ZooKeeper/ZooKeeper.h"
 #include "Imagine_Rpc/RpcWatcher.h"
-#include "Imagine_Rpc/Callbacks.h"
+#include "Imagine_Rpc/common_definition.h"
 #include "Imagine_Rpc/Rpc.h"
 
 #include <unordered_map>
@@ -57,11 +57,19 @@ class RpcZooKeeper : public ZooKeeper
     };
 
  public:
+    RpcZooKeeper();
+    
+    RpcZooKeeper(std::string profile_name);
+
     RpcZooKeeper(const std::string &ip, const std::string &port, Imagine_Muduo::EventCallback read_callback, Imagine_Muduo::EventCallback write_callback, Imagine_Muduo::EventCommunicateCallback communicate_callback, double time_out = 120.0, int max_request_num = 10000);
 
     RpcZooKeeper(const std::string &ip, const std::string &port, double time_out = 120.0, int max_request_num = 10000);
 
     ~RpcZooKeeper() {}
+
+    void Init(std::string profile_path);
+
+    void SetDefaultCallback();
 
     void SetDefaultReadCallback();
 
@@ -92,8 +100,8 @@ class RpcZooKeeper : public ZooKeeper
     long long GetHeartNodeLastRequestTime(int sockfd);
 
  private:
-    const std::string ip_;
-    const std::string port_;
+    // const std::string ip_;
+    // const std::string port_;
 
     pthread_mutex_t heart_map_lock_;
     std::unordered_map<int, RpcZooKeeper::RpcZKHeart *> heart_map_;

@@ -3,7 +3,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-using namespace Imagine_Rpc;
+namespace Imagine_Rpc
+{
 
 const double Rpc::default_delay_ = 2.0;
 
@@ -422,3 +423,5 @@ void Rpc::SetSocketOpt(int sockfd)
     int reuse = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse)); // 设置端口复用
 }
+
+} // namespace Imagine_Rpc

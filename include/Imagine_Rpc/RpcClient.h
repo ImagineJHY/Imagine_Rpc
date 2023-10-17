@@ -14,12 +14,14 @@ namespace Imagine_Rpc
 
 class RpcClient
 {
-    // public:
-    // using RpcCallback=std::function<std::vector<std::string>(const std::vector<std::string>&)>;
  public:
     RpcClient();
 
+    RpcClient(std::string profile_name);
+
     ~RpcClient(){};
+
+    void Init(std::string profile_name);
 
     // 完成通信后关闭连接
     static std::vector<std::string> Caller(const std::string &method, const std::vector<std::string> &parameters, const std::string &ip, const std::string &port); // 在Zookeeper服务器查找函数IP
@@ -40,6 +42,21 @@ class RpcClient
     static RpcCommunicateCallback DefaultCommunicateCallback();
 
     // EventLoop* loop_;
+
+ private:
+    std::string ip_;
+    std::string port_;
+    std::string rpc_zookeeper_ip_;
+    std::string rpc_zookeeper_port_;
+    std::string log_name_;
+    std::string log_path_;
+    size_t max_log_file_size_;
+    bool async_log_;
+    bool singleton_log_mode_;
+    std::string log_title_;
+    bool log_with_timestamp_;
+
+    Imagine_Tool::Logger* logger_;
 };
 
 } // namespace Imagine_Rpc
