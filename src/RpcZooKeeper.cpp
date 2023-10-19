@@ -61,8 +61,6 @@ void RpcZooKeeper::InitLoop()
     }
 
     SetDefaultCallback();
-
-    loop_ = new EventLoop(muduo_profile_name_);
 }
 
 void RpcZooKeeper::SetDefaultCallback()

@@ -135,9 +135,9 @@ void RpcServer::Init(YAML::Node config)
 
     logger_->Init(config);
 
-    SetDefaultCallback();
-
     InitLoop(config);
+
+    SetDefaultCallback();
 }
 
 void RpcServer::InitLoop(YAML::Node config)
