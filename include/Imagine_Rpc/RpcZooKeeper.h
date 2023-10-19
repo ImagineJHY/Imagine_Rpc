@@ -61,6 +61,8 @@ class RpcZooKeeper : public ZooKeeper
     
     RpcZooKeeper(std::string profile_name);
 
+    RpcZooKeeper(YAML::Node config);
+
     RpcZooKeeper(const std::string &ip, const std::string &port, Imagine_Muduo::EventCallback read_callback, Imagine_Muduo::EventCallback write_callback, Imagine_Muduo::EventCommunicateCallback communicate_callback, double time_out = 120.0, int max_request_num = 10000);
 
     RpcZooKeeper(const std::string &ip, const std::string &port, double time_out = 120.0, int max_request_num = 10000);
@@ -68,6 +70,8 @@ class RpcZooKeeper : public ZooKeeper
     ~RpcZooKeeper() {}
 
     void Init(std::string profile_path);
+
+    void InitLoop();
 
     void SetDefaultCallback();
 

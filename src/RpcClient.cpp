@@ -21,6 +21,11 @@ RpcClient::RpcClient(std::string profile_name)
     Init(profile_name);
 }
 
+RpcClient::RpcClient(YAML::Node config)
+{
+    Init(config);
+}
+
 void RpcClient::Init(std::string profile_name)
 {
     if (profile_name == "") {
@@ -28,6 +33,11 @@ void RpcClient::Init(std::string profile_name)
     }
 
     YAML::Node config = YAML::LoadFile(profile_name);
+    Init(config);
+}
+
+void RpcClient::Init(YAML::Node config)
+{
     ip_ = config["ip"].as<std::string>();
     port_ = config["port"].as<std::string>();
     rpc_zookeeper_ip_ = config["zookeeper_ip"].as<std::string>();

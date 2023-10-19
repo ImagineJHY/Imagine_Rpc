@@ -50,6 +50,8 @@ class RpcServer
 
     RpcServer(std::string profile_name);
 
+    RpcServer(YAML::Node config);
+
     RpcServer(const std::string &ip, const std::string &port, const std::string &keeper_ip = "", const std::string &keeper_port = "", int max_client_num = 10000);
 
     RpcServer(const std::string &ip, const std::string &port, std::unordered_map<std::string, RpcCallback> callbacks, const std::string &keeper_ip = "", const std::string &keeper_port = "", int max_client_num = 10000);
@@ -57,6 +59,10 @@ class RpcServer
     ~RpcServer();
 
     void Init(std::string profile_name);
+
+    void Init(YAML::Node config);
+
+    void InitLoop(YAML::Node config);
 
     void InitProfilePath(std::string profile_name);
 

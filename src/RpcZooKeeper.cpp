@@ -11,13 +11,12 @@ RpcZooKeeper::RpcZooKeeper()
 
 RpcZooKeeper::RpcZooKeeper(std::string profile_path) : ZooKeeper(profile_path)
 {
-    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
-        throw std::exception();
-    }
+    InitLoop();
+}
 
-    SetDefaultCallback();
-
-    loop_ = new EventLoop(muduo_profile_name_);
+RpcZooKeeper::RpcZooKeeper(YAML::Node config) : ZooKeeper(config)
+{
+    InitLoop();
 }
 
 RpcZooKeeper::RpcZooKeeper(const std::string &ip, const std::string &port, EventCallback read_callback, EventCallback write_callback, EventCommunicateCallback communicate_callback, double time_out, int max_request_num)
@@ -53,6 +52,17 @@ void RpcZooKeeper::Init(std::string profile_name)
     ZooKeeper::Init(profile_name);
 
     SetDefaultCallback();
+}
+
+void RpcZooKeeper::InitLoop()
+{
+    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    SetDefaultCallback();
+
+    loop_ = new EventLoop(muduo_profile_name_);
 }
 
 void RpcZooKeeper::SetDefaultCallback()

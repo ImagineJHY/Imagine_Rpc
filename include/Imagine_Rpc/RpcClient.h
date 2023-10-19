@@ -19,9 +19,13 @@ class RpcClient
 
     RpcClient(std::string profile_name);
 
+    RpcClient(YAML::Node config);
+
     ~RpcClient(){};
 
     void Init(std::string profile_name);
+
+    void Init(YAML::Node config);
 
     // 完成通信后关闭连接
     static std::vector<std::string> Caller(const std::string &method, const std::vector<std::string> &parameters, const std::string &ip, const std::string &port); // 在Zookeeper服务器查找函数IP

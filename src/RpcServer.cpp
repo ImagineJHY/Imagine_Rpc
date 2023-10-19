@@ -23,16 +23,11 @@ RpcServer::RpcServer()
 RpcServer::RpcServer(std::string profile_name)
 {
     Init(profile_name);
+}
 
-    if (pthread_mutex_init(&callback_lock_, nullptr) != 0) {
-        throw std::exception();
-    }
-
-    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
-        throw std::exception();
-    }
-
-    loop_ = new Imagine_Muduo::EventLoop(muduo_profile_name_);
+RpcServer::RpcServer(YAML::Node config)
+{
+    Init(config);
 }
 
 RpcServer::RpcServer(const std::string &ip, const std::string &port, const std::string &keeper_ip, const std::string &keeper_port, int max_client_num)
@@ -109,6 +104,15 @@ void RpcServer::Init(std::string profile_name)
     }
 
     YAML::Node config = YAML::LoadFile(profile_name);
+    Init(config);
+
+    InitProfilePath(profile_name);
+
+    GenerateSubmoduleProfile(config);
+}
+
+void RpcServer::Init(YAML::Node config)
+{
     ip_ = config["ip"].as<std::string>();
     port_ = config["port"].as<std::string>();
     rpc_zookeeper_ip_ = config["zookeeper_ip"].as<std::string>();
@@ -131,11 +135,22 @@ void RpcServer::Init(std::string profile_name)
 
     logger_->Init(config);
 
-    InitProfilePath(profile_name);
-
-    GenerateSubmoduleProfile(config);
-
     SetDefaultCallback();
+
+    InitLoop(config);
+}
+
+void RpcServer::InitLoop(YAML::Node config)
+{
+    if (pthread_mutex_init(&callback_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    loop_ = new Imagine_Muduo::EventLoop(config);
 }
 
 void RpcServer::InitProfilePath(std::string profile_name)
