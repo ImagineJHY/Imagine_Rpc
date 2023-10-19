@@ -2,6 +2,7 @@
 
 #include <sys/uio.h>
 #include <cstdarg>
+#include <fstream>
 
 namespace Imagine_Rpc
 {
@@ -146,13 +147,13 @@ void RpcServer::InitProfilePath(std::string profile_name)
 
 void RpcServer::GenerateSubmoduleProfile(YAML::Node config)
 {
-    int fd = open(muduo_profile_name_.c_str(), O_RDWR | O_CREAT);
+    std::ofstream fout(muduo_profile_name_.c_str());
     config.remove(config["ip"]);
     config.remove(config["zookeeper_ip"]);
     config.remove(config["zookeeper_port"]);
     config["log_name"] = "imagine_muduo_log.log";
-    write(fd, config.as<std::string>().c_str(), config.as<std::string>().size());
-    close(fd);
+    fout << config;
+    fout.close(fd);
 }
 
 bool RpcServer::SetKeeper(const std::string &keeper_ip, const std::string &keeper_port)
