@@ -224,7 +224,7 @@ void RpcServer::SetDefaultReadCallback()
         return output_iovec;
     };
     if (loop_) {
-        loop_->SetReadCallback(write_callback_);
+        loop_->SetReadCallback(read_callback_);
     }
 }
 
@@ -248,7 +248,7 @@ void RpcServer::SetDefaultCommunicateCallback()
 {
     communicate_callback_ = Rpc::DefaultCommunicateCallback;
     if (loop_) {
-        loop_->SetCommunicateCallback(write_callback_);
+        loop_->SetCommunicateCallback(communicate_callback_);
     }
 }
 
