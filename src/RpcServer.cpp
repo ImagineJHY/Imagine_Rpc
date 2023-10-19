@@ -153,7 +153,7 @@ void RpcServer::GenerateSubmoduleProfile(YAML::Node config)
     config.remove(config["zookeeper_port"]);
     config["log_name"] = "imagine_muduo_log.log";
     fout << config;
-    fout.close(fd);
+    fout.close();
 }
 
 bool RpcServer::SetKeeper(const std::string &keeper_ip, const std::string &keeper_port)
