@@ -1,39 +1,31 @@
 #ifndef IMAGINE_RPC_RPCZOOKEEPER_H
 #define IMAGINE_RPC_RPCZOOKEEPER_H
 
-#include <ZooKeeper.h>
-#include <EventLoop.h>
-// #include <TimeUtil.h>
+#include "Imagine_Muduo/EventLoop.h"
+#include "Imagine_ZooKeeper/ZooKeeper.h"
+#include "Imagine_Rpc/RpcWatcher.h"
+#include "Imagine_Rpc/common_definition.h"
+#include "Imagine_Rpc/Rpc.h"
+
 #include <unordered_map>
 #include <string>
 #include <list>
-
-#include "Callbacks.h"
-#include "RpcWatcher.h"
-#include "Rpc.h"
-
-// #define DEFAULT_KEEPER_IP "192.168.83.129"
-// #define DEFAULT_KEEPER_PORT "9999"
-
-using namespace Imagine_Muduo;
 
 namespace Imagine_Rpc
 {
 
 class RpcZooKeeper : public ZooKeeper
 {
-// public:
-// using RpcZooKeeperTimerCallback=std::function<void(int,double)>;
  public:
     class RpcZKHeart
     {
      public:
-        RpcZKHeart(const std::string &cluster_name, const std::string &stat, long long timerfd, long long time = TimeUtil::GetNow())
+        RpcZKHeart(const std::string &cluster_name, const std::string &stat, long long timerfd, long long time = Imagine_Tool::TimeUtil::GetNow())
             : timerfd_(timerfd), last_request_time_(time), cluster_name_(cluster_name), znode_stat_(stat) {}
 
         bool ReSetLastRequestTime()
         {
-            last_request_time_ = TimeUtil::GetNow();
+            last_request_time_ = Imagine_Tool::TimeUtil::GetNow();
             return true;
         }
 
@@ -65,11 +57,23 @@ class RpcZooKeeper : public ZooKeeper
     };
 
  public:
-    RpcZooKeeper(const std::string &ip, const std::string &port, EventCallback read_callback, EventCallback write_callback, EventCommunicateCallback communicate_callback, double time_out = 120.0, int max_request_num = 10000);
+    RpcZooKeeper();
+    
+    RpcZooKeeper(std::string profile_name);
+
+    RpcZooKeeper(YAML::Node config);
+
+    RpcZooKeeper(const std::string &ip, const std::string &port, Imagine_Muduo::EventCallback read_callback, Imagine_Muduo::EventCallback write_callback, Imagine_Muduo::EventCommunicateCallback communicate_callback, double time_out = 120.0, int max_request_num = 10000);
 
     RpcZooKeeper(const std::string &ip, const std::string &port, double time_out = 120.0, int max_request_num = 10000);
 
     ~RpcZooKeeper() {}
+
+    void Init(std::string profile_path);
+
+    void InitLoop();
+
+    void SetDefaultCallback();
 
     void SetDefaultReadCallback();
 
@@ -100,8 +104,8 @@ class RpcZooKeeper : public ZooKeeper
     long long GetHeartNodeLastRequestTime(int sockfd);
 
  private:
-    const std::string ip_;
-    const std::string port_;
+    // const std::string ip_;
+    // const std::string port_;
 
     pthread_mutex_t heart_map_lock_;
     std::unordered_map<int, RpcZooKeeper::RpcZKHeart *> heart_map_;

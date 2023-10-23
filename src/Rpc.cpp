@@ -1,9 +1,10 @@
-#include "Rpc.h"
+#include "Imagine_Rpc/Rpc.h"
 
 #include <unistd.h>
 #include <errno.h>
 
-using namespace Imagine_Rpc;
+namespace Imagine_Rpc
+{
 
 const double Rpc::default_delay_ = 2.0;
 
@@ -153,7 +154,7 @@ std::string Rpc::Communicate(const std::string &send_content, const struct socka
         char buffer[1024];
         ret = read(sockfd, buffer, sizeof(buffer)); // Zookeeper返回函数IP+PORT,用\r\n分隔
         if (ret == 0) {
-            printf("111 Connection Close! errno is %d\n", errno);
+            LOG_INFO("111 Connection Close! errno is %d", errno);
             close(sockfd);
             return "";
         }
@@ -174,7 +175,7 @@ std::string Rpc::Communicate(const std::string &send_content, int *sockfd, bool 
 {
     int ret = write(*sockfd, &send_content[0], send_content.size());
     if (ret == -1) {
-        printf("Communnicate write exception!\n");
+        LOG_INFO("Communnicate write exception!");
         throw std::exception();
     }
     std::string recv_content;
@@ -187,7 +188,7 @@ std::string Rpc::Communicate(const std::string &send_content, int *sockfd, bool 
 
         ret = read(*sockfd, buffer, sizeof(buffer)); // Zookeeper返回函数IP+PORT,用\r\n分隔
         if (ret == 0) {
-            printf("222 Connection Close! errno is %d\n", errno);
+            LOG_INFO("222 Connection Close! errno is %d", errno);
             return "";
         }
         for (int i = 0; i < ret; i++) {
@@ -219,7 +220,7 @@ bool Rpc::Connect(const std::string &ip, const std::string &port, int *sockfd)
         throw std::exception();
     }
 
-    printf("connection success!\n");
+    LOG_INFO("connection success!");
 
     return true;
 }
@@ -229,7 +230,7 @@ bool Rpc::Unpack(std::vector<std::string> &message)
     // for(int i=0;i<message.size();i++)printf("UnPack : %s\n",&message[i][0]);
     if (message.size() < 2) {
         // printf("%s\n",&message[0][0]);
-        printf("Unpack exception!\n");
+        LOG_INFO("Unpack exception!");
         throw std::exception();
     }
     message.erase(message.begin(), message.begin() + 2);
@@ -393,7 +394,7 @@ void Rpc::DefaultClientTimerCallback(int sockfd, const std::string &name, RpcTim
         ret = read(sockfd, buffer, sizeof(buffer)); // Zookeeper返回函数IP+PORT,用\r\n分隔
         if (ret == 0) {
             // 服务器已关闭连接
-            printf("333 Connection Close! errno is %d\n", errno);
+            LOG_INFO("333 Connection Close! errno is %d", errno);
             return;
         }
         for (int i = 0; i < ret; i++) {
@@ -404,10 +405,10 @@ void Rpc::DefaultClientTimerCallback(int sockfd, const std::string &name, RpcTim
         }
     }
     if (recv_content == "9\r\nSuccess\r\n") {
-        printf("Heartbeat Success!\n");
+        LOG_INFO("Heartbeat Success!");
     } else {
-        printf("recv is %s\n", &recv_content[0]);
-        printf("DefaultClientTimerCallback exception!\n");
+        LOG_INFO("recv is %s", &recv_content[0]);
+        LOG_INFO("DefaultClientTimerCallback exception!");
         throw std::exception();
     }
 }
@@ -422,3 +423,5 @@ void Rpc::SetSocketOpt(int sockfd)
     int reuse = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse)); // 设置端口复用
 }
+
+} // namespace Imagine_Rpc

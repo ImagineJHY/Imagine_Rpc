@@ -1,12 +1,37 @@
-#include "RpcServer.h"
+#include "Imagine_Rpc/RpcServer.h"
 
 #include <sys/uio.h>
 #include <cstdarg>
+#include <fstream>
 
-using namespace Imagine_Rpc;
+namespace Imagine_Rpc
+{
+
+RpcServer::RpcServer()
+{
+    if (pthread_mutex_init(&callback_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    loop_ = new Imagine_Muduo::EventLoop();
+}
+
+RpcServer::RpcServer(std::string profile_name)
+{
+    Init(profile_name);
+}
+
+RpcServer::RpcServer(YAML::Node config)
+{
+    Init(config);
+}
 
 RpcServer::RpcServer(const std::string &ip, const std::string &port, const std::string &keeper_ip, const std::string &keeper_port, int max_client_num)
-                     : ip_(ip), port_(port), keeper_ip_(keeper_ip), keeper_port_(keeper_port)
+                     : ip_(ip), port_(port), rpc_zookeeper_ip_(keeper_ip), rpc_zookeeper_port_(keeper_port)
 {
     int temp_port = Rpc::StringToInt(port_);
     if (temp_port < 0) {
@@ -21,21 +46,13 @@ RpcServer::RpcServer(const std::string &ip, const std::string &port, const std::
         throw std::exception();
     }
 
-    // port = Rpc::IntToString(port_);
+    SetDefaultCallback();
 
-    SetDefaultReadCallback();
-
-    SetDefaultWriteCallback();
-
-    SetDefaultCommunicateCallback();
-
-    SetDefaultTimerCallback();
-
-    loop_ = new EventLoop(temp_port, max_client_num, read_callback_, write_callback_, communicate_callback_);
+    loop_ = new Imagine_Muduo::EventLoop(temp_port, 5, max_client_num, read_callback_, write_callback_, communicate_callback_);
 }
 
 RpcServer::RpcServer(const std::string &ip, const std::string &port, std::unordered_map<std::string, RpcCallback> callbacks, const std::string &keeper_ip, const std::string &keeper_port, int max_client_num)
-                     : ip_(ip), port_(port), keeper_ip_(keeper_ip), keeper_port_(keeper_port)
+                     : ip_(ip), port_(port), rpc_zookeeper_ip_(keeper_ip), rpc_zookeeper_port_(keeper_port)
 {
     int temp_port = Rpc::StringToInt(port_);
     if (temp_port <= 0) {
@@ -59,7 +76,7 @@ RpcServer::RpcServer(const std::string &ip, const std::string &port, std::unorde
 
     SetDefaultTimerCallback();
 
-    loop_ = new EventLoop(temp_port, max_client_num, read_callback_, write_callback_, communicate_callback_);
+    loop_ = new EventLoop(temp_port, 5, max_client_num, read_callback_, write_callback_, communicate_callback_);
 
     callback_num_ = callbacks.size();
     pthread_mutex_lock(&callback_lock_);
@@ -67,8 +84,8 @@ RpcServer::RpcServer(const std::string &ip, const std::string &port, std::unorde
         // Callee(it->first,it->second);
         callbacks_.insert(std::make_pair(it->first, it->second));
         // callbacks_.insert({it->first,it->second});
-        if (keeper_ip_.size() && keeper_port_.size())
-            Register(it->first, keeper_ip_, keeper_port_);
+        if (rpc_zookeeper_ip_.size() && rpc_zookeeper_port_.size())
+            Register(it->first, rpc_zookeeper_ip_, rpc_zookeeper_port_);
     }
     pthread_mutex_unlock(&callback_lock_);
     // register_loop_=new EventLoop(0,max_register_num,)
@@ -80,19 +97,101 @@ RpcServer::~RpcServer()
     delete loop_;
 }
 
+void RpcServer::Init(std::string profile_name)
+{
+    if (profile_name == "") {
+        throw std::exception();
+    }
+
+    YAML::Node config = YAML::LoadFile(profile_name);
+    Init(config);
+
+    InitProfilePath(profile_name);
+
+    GenerateSubmoduleProfile(config);
+}
+
+void RpcServer::Init(YAML::Node config)
+{
+    ip_ = config["ip"].as<std::string>();
+    port_ = config["port"].as<std::string>();
+    rpc_zookeeper_ip_ = config["zookeeper_ip"].as<std::string>();
+    rpc_zookeeper_port_ = config["zookeeper_port"].as<std::string>();
+    thread_num_ = config["thread_num"].as<size_t>();
+    log_name_ = config["log_name"].as<std::string>();
+    log_path_ = config["log_path"].as<std::string>();
+    max_log_file_size_ = config["max_log_file_size"].as<size_t>();
+    async_log_ = config["async_log"].as<bool>();
+    singleton_log_mode_ = config["singleton_log_mode"].as<bool>();
+    log_title_ = config["log_title"].as<std::string>();
+    log_with_timestamp_ = config["log_with_timestamp"].as<bool>();
+
+    if (singleton_log_mode_) {
+        logger_ = Imagine_Tool::SingletonLogger::GetInstance();
+    } else {
+        logger_ = new Imagine_Tool::NonSingletonLogger();
+        Imagine_Tool::Logger::SetInstance(logger_);
+    }
+
+    logger_->Init(config);
+
+    InitLoop(config);
+
+    SetDefaultCallback();
+}
+
+void RpcServer::InitLoop(YAML::Node config)
+{
+    if (pthread_mutex_init(&callback_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    if (pthread_mutex_init(&heart_map_lock_, nullptr) != 0) {
+        throw std::exception();
+    }
+
+    loop_ = new Imagine_Muduo::EventLoop(config);
+}
+
+void RpcServer::InitProfilePath(std::string profile_name)
+{
+    size_t idx = profile_name.find_last_of("/");
+    profile_path_ = profile_name.substr(0, idx + 1);
+    muduo_profile_name_ = profile_path_ + "generate_Muduo_profile.yaml";
+}
+
+void RpcServer::GenerateSubmoduleProfile(YAML::Node config)
+{
+    std::ofstream fout(muduo_profile_name_.c_str());
+    config.remove(config["ip"]);
+    config.remove(config["zookeeper_ip"]);
+    config.remove(config["zookeeper_port"]);
+    config["log_name"] = "imagine_muduo_log.log";
+    fout << config;
+    fout.close();
+}
+
 bool RpcServer::SetKeeper(const std::string &keeper_ip, const std::string &keeper_port)
 {
-    keeper_ip_ = keeper_ip;
-    keeper_port_ = keeper_port;
+    rpc_zookeeper_ip_ = keeper_ip;
+    rpc_zookeeper_port_ = keeper_port;
 
     return true;
+}
+
+void RpcServer::SetDefaultCallback()
+{
+    SetDefaultReadCallback();
+    SetDefaultWriteCallback();
+    SetDefaultCommunicateCallback();
+    SetDefaultTimerCallback();
 }
 
 void RpcServer::SetDefaultReadCallback()
 {
     read_callback_ = [this](const struct iovec *input_iovec)
     {
-        printf("this is RpcServer : %s\n", &(ip_ + port_)[0]);
+        LOG_INFO("this is RpcServer : %s", &(ip_ + port_)[0]);
 
         std::string input = Rpc::GetIovec(input_iovec);
 
@@ -125,7 +224,7 @@ void RpcServer::SetDefaultReadCallback()
         return output_iovec;
     };
     if (loop_) {
-        loop_->SetWriteCallback(write_callback_);
+        loop_->SetReadCallback(read_callback_);
     }
 }
 
@@ -149,7 +248,7 @@ void RpcServer::SetDefaultCommunicateCallback()
 {
     communicate_callback_ = Rpc::DefaultCommunicateCallback;
     if (loop_) {
-        loop_->SetWriteCallback(write_callback_);
+        loop_->SetCommunicateCallback(communicate_callback_);
     }
 }
 
@@ -164,9 +263,9 @@ void RpcServer::SetDefaultTimerCallback()
             return;
         }
 
-        if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
+        if (Imagine_Tool::TimeUtil::GetNow() > Imagine_Tool::TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            printf("RpcServer Timer Set offline!\n");
+            LOG_INFO("RpcServer Timer Set offline!");
             this->loop_->Closefd(sockfd);
             this->DeleteUser(sockfd);
             return;
@@ -228,8 +327,8 @@ bool RpcServer::DeleteUser(int sockfd)
 void RpcServer::Callee(const std::string &method, RpcCallback callback)
 { // 服务器注册函数
     pthread_mutex_lock(&callback_lock_);
-    if (keeper_ip_.size() && keeper_port_.size()) {
-        Register(method, keeper_ip_, keeper_port_); // 在服务器上注册name:ip_port
+    if (rpc_zookeeper_ip_.size() && rpc_zookeeper_port_.size()) {
+        Register(method, rpc_zookeeper_ip_, rpc_zookeeper_port_); // 在服务器上注册name:ip_port
     }
     callbacks_.insert(std::make_pair(method, callback));
     pthread_mutex_unlock(&callback_lock_);
@@ -245,7 +344,7 @@ bool RpcServer::Register(const std::string &method, const std::string &keeper_ip
     while (1) {
         if (Rpc::Connect(keeper_ip, keeper_port, &sockfd)) {
             if (Rpc::Deserialize(Rpc::Communicate(head + content, &sockfd))[1] == "Success") {
-                printf("Server %s Register Success!\n", &(ip_ + port_)[0]);
+                LOG_INFO("Server %s Register Success!", &(ip_ + port_)[0]);
                 Rpc::DefaultKeepAliveClient(loop_, std::bind(&Rpc::DefaultClientTimerCallback, sockfd, method, nullptr));
 
                 return true;
@@ -253,11 +352,11 @@ bool RpcServer::Register(const std::string &method, const std::string &keeper_ip
                 close(sockfd);
             }
         }
-        printf("Register unsuccess!try again after 5 second!\n");
+        LOG_INFO("Register unsuccess!try again after 5 second!");
         sleep(5);
     }
 
-    printf("Register exception!\n");
+    LOG_INFO("Register exception!");
     throw std::exception();
 
     return false;
@@ -271,11 +370,11 @@ bool RpcServer::DeRegister(const std::string &method, const std::string &keeper_
     std::string content = GenerateDefaultRpcKeeperContent("DeRegister", method);
     std::string head = Rpc::GenerateDefaultHead(content);
     if (Rpc::Deserialize(Rpc::Communicate(head + content, &addr, true), 0)[1] == "Success") {
-        printf("Server %s Deregister Success!\n", &(ip_ + port_)[0]);
+        LOG_INFO("Server %s Deregister Success!", &(ip_ + port_)[0]);
         return true;
     }
 
-    printf("DeRegister exception!\n");
+    LOG_INFO("DeRegister exception!");
     throw std::exception();
 
     return false;
@@ -292,7 +391,7 @@ RpcCallback RpcServer::SearchFunc(std::string method)
     auto it = callbacks_.find(method);
     if (it == callbacks_.end()) {
         // 没找到
-        printf("SearchFunc exception!\n");
+        LOG_INFO("SearchFunc exception!");
         throw std::exception();
     }
     auto callback = it->second;
@@ -340,3 +439,5 @@ long long RpcServer::GetHeartNodeLastRequestTime(int sockfd)
 
     return last_request_time;
 }
+
+} // namespace Imagine_Rpc
