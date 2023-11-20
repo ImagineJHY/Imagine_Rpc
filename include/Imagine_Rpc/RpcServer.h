@@ -17,10 +17,20 @@ class RpcServer
 
     RpcServer(RpcServerBuilder* builder);
 
+    RpcServer(const std::string& profile_name);
+
+    RpcServer(const YAML::Node& config);
+
+    RpcServer* const Start();
+
+    RpcServer* const RegisterService(Service* service);
+
+    RpcServer* const DeregisterService(Service* service);
+
     ~RpcServer();
 
  private:
-    Builder* builder_;
+    RpcServerBuilder* builder_;
 };
 
 } // namespace Imagine_Rpc

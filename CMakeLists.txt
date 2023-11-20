@@ -6,8 +6,8 @@ project(IMAGINE_RPC)
 
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -std=c++11 -Wall -Werror")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Wall -Werror")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -std=c++11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpermissive -g -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -g -std=c++11")
 
 string(ASCII 27 Esc)
 set(R "${Esc}[0;31m")
