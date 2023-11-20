@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message MyServiceRequestMessage {
+    int32 a = 1;
+    int32 b = 2;
+}
+
+message MyServiceResponseMessage {
+    int32 ans = 1;
+}

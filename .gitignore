@@ -15,3 +15,12 @@
 
 # vs
 .vscode
+
+# test
+/test
+
+# examples
+/examples
+
+# log
+/log
