@@ -169,4 +169,16 @@ Stub* Stub::SetMethodName(const std::string& method_name)
     return this;
 }
 
+Stub* Stub::SetSockfd(int sockfd)
+{
+    sockfd_ = sockfd;
+
+    return this;
+}
+
+int Stub::GetSockfd() const
+{
+    return sockfd_;
+}
+
 } // namespace Imagine_Rpc

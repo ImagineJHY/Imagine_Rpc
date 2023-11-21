@@ -40,6 +40,10 @@ class Stub
 
     Stub* SetMethodName(const std::string& method_name);
 
+    Stub* SetSockfd(int sockfd);
+
+    int GetSockfd() const;
+
  protected:
     std::string server_ip_;
     std::string server_port_;
