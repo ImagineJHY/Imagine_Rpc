@@ -23,6 +23,32 @@ Stub::Stub(YAML::Node config)
     Init(config);
 }
 
+Stub::Stub(const Stub& stub)
+{
+    zookeeper_ip_ = stub.zookeeper_ip_;
+    zookeeper_port_ = stub.zookeeper_port_;
+    service_name_ = stub.service_name_;
+    method_name_ = stub.method_name_;
+    log_name_ = stub.log_name_;
+    log_path_ = stub.log_path_;
+    max_log_file_size_ = stub.max_log_file_size_;
+    async_log_ = stub.async_log_;
+    singleton_log_mode_ = stub.singleton_log_mode_;
+    log_title_ = stub.log_title_;
+    log_with_timestamp_ = stub.log_with_timestamp_;
+
+    if (singleton_log_mode_) {
+        logger_ = Imagine_Tool::SingletonLogger::GetInstance();
+    } else {
+        // 暂无non-singleton-Log的非yaml类型Init方法
+        throw std::exception();
+        logger_ = new Imagine_Tool::NonSingletonLogger();
+        Imagine_Tool::Logger::SetInstance(logger_);
+    }
+
+    // logger_->Init(config);
+}
+
 Stub::~Stub()
 {
 }

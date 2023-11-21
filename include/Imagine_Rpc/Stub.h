@@ -16,6 +16,8 @@ class Stub
 
     Stub(YAML::Node config);
 
+    Stub(const Stub& stub);
+
     ~Stub();
 
     void Init(std::string profile_name);
