@@ -141,4 +141,18 @@ Status Stub::CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg
     return Status::OK;
 }
 
+Stub* Stub::SetServiceName(const std::string& service_name)
+{
+    service_name_ = service_name;
+
+    return this;
+}
+
+Stub* Stub::SetMethodName(const std::string& method_name)
+{
+    method_name_ = method_name;
+
+    return this;
+}
+
 } // namespace Imagine_Rpc
