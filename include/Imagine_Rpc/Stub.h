@@ -28,6 +28,8 @@ class Stub
 
     Stub* ConnectServer();
 
+    Stub* CloseConnection();
+
     Status Call(RpcMessage* request_msg, RpcMessage* response_msg);
 
     Status CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg);

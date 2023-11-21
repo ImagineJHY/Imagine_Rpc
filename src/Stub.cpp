@@ -112,6 +112,13 @@ Stub* Stub::ConnectServer()
     return this;
 }
 
+Stub* Stub::CloseConnection()
+{
+    close(sockfd_);
+
+    return this;
+}
+
 Status Stub::Call(RpcMessage* request_msg, RpcMessage* response_msg)
 {
     if (!server_ip_.size() || !server_port_.size()) {
