@@ -141,6 +141,20 @@ Status Stub::CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg
     return Status::OK;
 }
 
+Stub* Stub::SetServerIp(const std::string& server_ip)
+{
+    server_ip_ = server_ip;
+
+    return this;
+}
+
+Stub* Stub::SetServerPort(const std::string& server_port)
+{
+    server_port_ = server_port;
+
+    return this;
+}
+
 Stub* Stub::SetServiceName(const std::string& service_name)
 {
     service_name_ = service_name;

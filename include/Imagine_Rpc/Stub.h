@@ -32,6 +32,10 @@ class Stub
 
     Status CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg);
 
+    Stub* SetServerIp(const std::string& server_ip);
+
+    Stub* SetServerPort(const std::string& server_port);
+
     Stub* SetServiceName(const std::string& service_name);
 
     Stub* SetMethodName(const std::string& method_name);
