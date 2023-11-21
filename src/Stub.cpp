@@ -61,19 +61,57 @@ void Stub::Init(YAML::Node config)
     logger_->Init(config);
 }
 
-Status Stub::Call(RpcMessage* request_msg, RpcMessage* response_msg)
+Stub* Stub::SearchNewServer()
 {
     Context request_context;
     Context response_context;
-    Internal::InternalMessage request_zk_msg;
-    Internal::InternalMessage response_zk_msg;
-    printf("zk ip is %s, zk port is %s\n", zookeeper_ip_.c_str(), zookeeper_port_.c_str());
-    RpcUtil::GenerateCallZooKeeperMessage(&request_context, &request_zk_msg, service_name_, method_name_, zookeeper_ip_, zookeeper_port_);
-    RpcUtil::SendMessage(&request_context, &request_zk_msg, &response_context, &response_zk_msg);
-    printf("server ip is %s, server port is %s\n", response_zk_msg.server_ip_().c_str(), response_zk_msg.server_port_().c_str());
-    RpcUtil::GenerateCallServerContext(&request_context, request_msg, service_name_, method_name_, response_zk_msg.server_ip_(), response_zk_msg.server_port_());
+    Internal::InternalMessage request_msg;
+    Internal::InternalMessage response_msg;
+    RpcUtil::GenerateCallZooKeeperMessage(&request_context, &request_msg, service_name_, method_name_, zookeeper_ip_, zookeeper_port_);
+    RpcUtil::SendMessage(&request_context, &request_msg, &response_context, &response_msg);
+    server_ip_ = response_msg.server_ip_();
+    server_port_ = response_msg.server_port_();
+
+    return this;
+}
+
+Stub* Stub::ConnectServer()
+{
+    if (!server_ip_.size() || !server_port_.size()) {
+        SearchNewServer();
+    }
+    printf("server ip is %s, server port is %s\n", server_ip_.c_str(), server_port_.c_str());
+    RpcUtil::Connect(server_ip_, server_port_, &sockfd_);
+
+    return this;
+}
+
+Status Stub::Call(RpcMessage* request_msg, RpcMessage* response_msg)
+{
+    if (!server_ip_.size() || !server_port_.size()) {
+        SearchNewServer();
+    }
+    Context request_context;
+    Context response_context;
+    printf("server ip is %s, server port is %s\n", server_ip_.c_str(), server_port_.c_str());
+    RpcUtil::GenerateCallServerContext(&request_context, request_msg, service_name_, method_name_, server_ip_, server_port_);
     RpcUtil::SendMessage(&request_context, request_msg, &response_context, response_msg);
     
+    return Status::OK;
+}
+
+Status Stub::CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg)
+{
+    if (!server_ip_.size() || !server_port_.size()) {
+        throw std::exception();
+    }
+
+    Context request_context;
+    Context response_context;
+    printf("server ip is %s, server port is %s\n", server_ip_.c_str(), server_port_.c_str());
+    RpcUtil::GenerateCallServerContext(&request_context, request_msg, service_name_, method_name_, server_ip_, server_port_);
+    RpcUtil::SendMessage(&request_context, request_msg, &response_context, response_msg, sockfd_);
+
     return Status::OK;
 }
 

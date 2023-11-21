@@ -22,11 +22,21 @@ class Stub
 
     void Init(YAML::Node config);
 
+    Stub* SearchNewServer();
+
+    Stub* ConnectServer();
+
     Status Call(RpcMessage* request_msg, RpcMessage* response_msg);
 
+    Status CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg);
+
  protected:
+    std::string server_ip_;
+    std::string server_port_;
     std::string zookeeper_ip_;
     std::string zookeeper_port_;
+    std::string service_name_;
+    std::string method_name_;
     std::string log_name_;
     std::string log_path_;
     size_t max_log_file_size_;
@@ -37,13 +47,8 @@ class Stub
 
     Imagine_Tool::Logger* logger_;
 
- protected:
-    RpcMessage* request_msg_;
-    RpcMessage* response_msg_;
-    std::string server_ip_;
-    std::string server_port_;
-    std::string service_name_;
-    std::string method_name_;
+ private:
+    int sockfd_;
 };
 
 } // namespace Imagine_Rpc

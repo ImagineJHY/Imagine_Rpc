@@ -258,7 +258,6 @@ void RpcUtil::SendMessage(const Context* request_context, const RpcMessage* requ
     SerializeMessage(request_context, request_msg, send_content);
     std::string recv_content = Communicate(send_content, &sockfd, conn_status);
     while(!DeserializeMessage(recv_content, response_context, response_msg)) {
-        sleep(100);
         if (conn_status == ConnectionStatus::Close) {
             LOG_INFO("Connection Close");
             return;
