@@ -67,8 +67,8 @@ void Stub::Init(YAML::Node config)
 {
     zookeeper_ip_ = config["zookeeper_ip"].as<std::string>();
     zookeeper_port_ = config["zookeeper_port"].as<std::string>();
-    service_name_ = config["service_name"].as<std::string>();
-    method_name_ = config["method_name"].as<std::string>();
+    // service_name_ = config["service_name"].as<std::string>();
+    // method_name_ = config["method_name"].as<std::string>();
     log_name_ = config["log_name"].as<std::string>();
     log_path_ = config["log_path"].as<std::string>();
     max_log_file_size_ = config["max_log_file_size"].as<size_t>();
