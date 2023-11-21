@@ -183,6 +183,16 @@ Stub* Stub::SetSockfd(int sockfd)
     return this;
 }
 
+std::string Stub::GetServerIp() const
+{
+    return server_ip_;
+}
+
+std::string Stub::GetServerPort() const
+{
+    return server_port_;
+}
+
 int Stub::GetSockfd() const
 {
     return sockfd_;

@@ -44,6 +44,10 @@ class Stub
 
     Stub* SetSockfd(int sockfd);
 
+    std::string GetServerIp() const;
+
+    std::string GetServerPort() const;
+
     int GetSockfd() const;
 
  protected:
