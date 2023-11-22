@@ -34,7 +34,7 @@ RpcServer* const RpcServer::RegisterService(Service* service)
 {
     if (builder_) {
         builder_->RegisterService(service);
-        LOG_INFO("Register Service %s Success!", service->GetServiceDescriptor()->GetServiceName());
+        LOG_INFO("Register Service %s Success!", service->GetServiceDescriptor()->GetServiceName().c_str());
     }
 
     return this;
