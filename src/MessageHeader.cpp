@@ -27,9 +27,10 @@ std::string MessageHeader::SerializeToString()
 
 bool MessageHeader::AppendToString(std::string& str)
 {
-    if (!context_size_ || !msg_size_) {
-        throw std::exception();
-    }
+    // protobuf序列化结果可能为0, 暂时不检查
+    // if (!context_size_ || !msg_size_) {
+    //     throw std::exception();
+    // }
     str += RpcUtil::IntToString(context_size_) + "\r\n" + RpcUtil::IntToString(msg_size_) + "\r\n";
 
     return true;
