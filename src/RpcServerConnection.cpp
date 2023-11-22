@@ -29,7 +29,7 @@ Imagine_Muduo::Connection* RpcServerConnection::Create(std::shared_ptr<Imagine_M
 
 void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 {
-    LOG_INFO("this is RpcServer : %s:%s, peer is %s:%s", GetIp().c_str(), GetPort().c_str(), conn->GetIp().c_str(), conn->GetPort().c_str());
+    LOG_INFO("RpcServer Receive peer Message From %s:%s!", conn->GetPeerIp().c_str(), conn->GetPeerPort().c_str());
 
     RpcServerBuilder* builder = dynamic_cast<RpcServerBuilder*>(server_);
     if (builder == nullptr) {
@@ -64,10 +64,11 @@ void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 
     conn->SetMessageEndIdx(header_size + context->ByteSize() + request_msg->ByteSize());
     
+    LOG_INFO("RpcService /%s/%s is Found!", context->service_name_().c_str(), context->method_name_().c_str());
     handler->HandleMethod(context, request_msg, response_msg);
 
     // 暂时默认保持连接
-    // builder->UpdatetUser(this);
+    builder->UpdatetUser(this);
 
     std::string response_content;
     RpcUtil::SerializeMessage(context, response_msg, response_content);
