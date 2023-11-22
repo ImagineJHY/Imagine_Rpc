@@ -48,4 +48,22 @@ RpcServer* const RpcServer::DeregisterService(Service* service)
     return this;
 }
 
+long long RpcServer::SetTimer(Imagine_Tool::TimerCallback timer_callback, double interval, double delay)
+{
+    if (builder_) {
+        return builder_->SetTimer(timer_callback, interval, delay);
+    }
+
+    return 0;
+}
+
+RpcServer* RpcServer::RemoveTimer(long long timerfd)
+{
+    if (builder_) {
+        builder_->RemoveTimer(timerfd);
+    }
+
+    return this;
+}
+
 } // namespace Imagine_Rpc

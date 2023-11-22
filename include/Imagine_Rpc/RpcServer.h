@@ -21,13 +21,17 @@ class RpcServer
 
     RpcServer(const YAML::Node& config);
 
+    ~RpcServer();
+
     RpcServer* const Start();
 
     RpcServer* const RegisterService(Service* service);
 
     RpcServer* const DeregisterService(Service* service);
 
-    ~RpcServer();
+    long long SetTimer(Imagine_Tool::TimerCallback timer_callback, double interval, double delay = 0.0);
+
+    RpcServer* RemoveTimer(long long timerfd);
 
  private:
     RpcServerBuilder* builder_;
