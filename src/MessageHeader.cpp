@@ -84,9 +84,9 @@ bool MessageHeader::ParseFromArray(const char* buf, size_t buf_size)
         }
     }
 
-    if (msg_size_ == 0) {
-        return false;
-    }
+    // if (msg_size_ == 0) {
+    //     return false;
+    // }
 
     header_size_ = idx + 1;
     return true;
