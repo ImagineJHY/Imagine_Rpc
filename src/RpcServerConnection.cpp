@@ -71,6 +71,7 @@ void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
     builder->UpdatetUser(this);
 
     std::string response_content;
+    LOG_INFO("context size is %d, response_msg size is %d", context->ByteSize(), response_msg->ByteSize());
     RpcUtil::SerializeMessage(context, response_msg, response_content);
     conn->AppendData(response_content.c_str(), response_content.size());
     conn->SetRevent(Imagine_Muduo::Connection::Event::Write);
