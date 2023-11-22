@@ -49,6 +49,7 @@ void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
     }
 
     // 获取handler, 获取message指针并解析message
+    LOG_INFO("RpcService /%s/%s is Finding!", context->service_name_().c_str(), context->method_name_().c_str());
     const MethodHandler* handler = builder->FindServiceDescriptor(context->service_name_())->FindMethodHandler(context->method_name_());
     RpcMessage* request_msg = handler->NewRequestMessage();
     RpcMessage* response_msg = handler->NewResponseMessage();
