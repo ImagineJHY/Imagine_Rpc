@@ -617,32 +617,167 @@ imagine_zookeeper/fast:
 	$(MAKE) -f thirdparty/Imagine_System/worker/Imagine_ZooKeeper/CMakeFiles/imagine_zookeeper.dir/build.make thirdparty/Imagine_System/worker/Imagine_ZooKeeper/CMakeFiles/imagine_zookeeper.dir/build
 .PHONY : imagine_zookeeper/fast
 
-src/Rpc.o: src/Rpc.cpp.o
+src/Builder.o: src/Builder.cpp.o
 
-.PHONY : src/Rpc.o
+.PHONY : src/Builder.o
 
 # target to build an object file
-src/Rpc.cpp.o:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Rpc.cpp.o
-.PHONY : src/Rpc.cpp.o
+src/Builder.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Builder.cpp.o
+.PHONY : src/Builder.cpp.o
 
-src/Rpc.i: src/Rpc.cpp.i
+src/Builder.i: src/Builder.cpp.i
 
-.PHONY : src/Rpc.i
+.PHONY : src/Builder.i
 
 # target to preprocess a source file
-src/Rpc.cpp.i:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Rpc.cpp.i
-.PHONY : src/Rpc.cpp.i
+src/Builder.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Builder.cpp.i
+.PHONY : src/Builder.cpp.i
 
-src/Rpc.s: src/Rpc.cpp.s
+src/Builder.s: src/Builder.cpp.s
 
-.PHONY : src/Rpc.s
+.PHONY : src/Builder.s
 
 # target to generate assembly for a file
-src/Rpc.cpp.s:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Rpc.cpp.s
-.PHONY : src/Rpc.cpp.s
+src/Builder.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Builder.cpp.s
+.PHONY : src/Builder.cpp.s
+
+src/Context.pb.o: src/Context.pb.cc.o
+
+.PHONY : src/Context.pb.o
+
+# target to build an object file
+src/Context.pb.cc.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Context.pb.cc.o
+.PHONY : src/Context.pb.cc.o
+
+src/Context.pb.i: src/Context.pb.cc.i
+
+.PHONY : src/Context.pb.i
+
+# target to preprocess a source file
+src/Context.pb.cc.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Context.pb.cc.i
+.PHONY : src/Context.pb.cc.i
+
+src/Context.pb.s: src/Context.pb.cc.s
+
+.PHONY : src/Context.pb.s
+
+# target to generate assembly for a file
+src/Context.pb.cc.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Context.pb.cc.s
+.PHONY : src/Context.pb.cc.s
+
+src/InternalMessage.pb.o: src/InternalMessage.pb.cc.o
+
+.PHONY : src/InternalMessage.pb.o
+
+# target to build an object file
+src/InternalMessage.pb.cc.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalMessage.pb.cc.o
+.PHONY : src/InternalMessage.pb.cc.o
+
+src/InternalMessage.pb.i: src/InternalMessage.pb.cc.i
+
+.PHONY : src/InternalMessage.pb.i
+
+# target to preprocess a source file
+src/InternalMessage.pb.cc.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalMessage.pb.cc.i
+.PHONY : src/InternalMessage.pb.cc.i
+
+src/InternalMessage.pb.s: src/InternalMessage.pb.cc.s
+
+.PHONY : src/InternalMessage.pb.s
+
+# target to generate assembly for a file
+src/InternalMessage.pb.cc.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalMessage.pb.cc.s
+.PHONY : src/InternalMessage.pb.cc.s
+
+src/InternalService.o: src/InternalService.cpp.o
+
+.PHONY : src/InternalService.o
+
+# target to build an object file
+src/InternalService.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalService.cpp.o
+.PHONY : src/InternalService.cpp.o
+
+src/InternalService.i: src/InternalService.cpp.i
+
+.PHONY : src/InternalService.i
+
+# target to preprocess a source file
+src/InternalService.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalService.cpp.i
+.PHONY : src/InternalService.cpp.i
+
+src/InternalService.s: src/InternalService.cpp.s
+
+.PHONY : src/InternalService.s
+
+# target to generate assembly for a file
+src/InternalService.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/InternalService.cpp.s
+.PHONY : src/InternalService.cpp.s
+
+src/MessageHeader.o: src/MessageHeader.cpp.o
+
+.PHONY : src/MessageHeader.o
+
+# target to build an object file
+src/MessageHeader.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MessageHeader.cpp.o
+.PHONY : src/MessageHeader.cpp.o
+
+src/MessageHeader.i: src/MessageHeader.cpp.i
+
+.PHONY : src/MessageHeader.i
+
+# target to preprocess a source file
+src/MessageHeader.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MessageHeader.cpp.i
+.PHONY : src/MessageHeader.cpp.i
+
+src/MessageHeader.s: src/MessageHeader.cpp.s
+
+.PHONY : src/MessageHeader.s
+
+# target to generate assembly for a file
+src/MessageHeader.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MessageHeader.cpp.s
+.PHONY : src/MessageHeader.cpp.s
+
+src/MethodHandler.o: src/MethodHandler.cpp.o
+
+.PHONY : src/MethodHandler.o
+
+# target to build an object file
+src/MethodHandler.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MethodHandler.cpp.o
+.PHONY : src/MethodHandler.cpp.o
+
+src/MethodHandler.i: src/MethodHandler.cpp.i
+
+.PHONY : src/MethodHandler.i
+
+# target to preprocess a source file
+src/MethodHandler.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MethodHandler.cpp.i
+.PHONY : src/MethodHandler.cpp.i
+
+src/MethodHandler.s: src/MethodHandler.cpp.s
+
+.PHONY : src/MethodHandler.s
+
+# target to generate assembly for a file
+src/MethodHandler.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/MethodHandler.cpp.s
+.PHONY : src/MethodHandler.cpp.s
 
 src/RpcClient.o: src/RpcClient.cpp.o
 
@@ -671,6 +806,33 @@ src/RpcClient.cpp.s:
 	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcClient.cpp.s
 .PHONY : src/RpcClient.cpp.s
 
+src/RpcConnection.o: src/RpcConnection.cpp.o
+
+.PHONY : src/RpcConnection.o
+
+# target to build an object file
+src/RpcConnection.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcConnection.cpp.o
+.PHONY : src/RpcConnection.cpp.o
+
+src/RpcConnection.i: src/RpcConnection.cpp.i
+
+.PHONY : src/RpcConnection.i
+
+# target to preprocess a source file
+src/RpcConnection.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcConnection.cpp.i
+.PHONY : src/RpcConnection.cpp.i
+
+src/RpcConnection.s: src/RpcConnection.cpp.s
+
+.PHONY : src/RpcConnection.s
+
+# target to generate assembly for a file
+src/RpcConnection.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcConnection.cpp.s
+.PHONY : src/RpcConnection.cpp.s
+
 src/RpcServer.o: src/RpcServer.cpp.o
 
 .PHONY : src/RpcServer.o
@@ -697,6 +859,87 @@ src/RpcServer.s: src/RpcServer.cpp.s
 src/RpcServer.cpp.s:
 	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServer.cpp.s
 .PHONY : src/RpcServer.cpp.s
+
+src/RpcServerBuilder.o: src/RpcServerBuilder.cpp.o
+
+.PHONY : src/RpcServerBuilder.o
+
+# target to build an object file
+src/RpcServerBuilder.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerBuilder.cpp.o
+.PHONY : src/RpcServerBuilder.cpp.o
+
+src/RpcServerBuilder.i: src/RpcServerBuilder.cpp.i
+
+.PHONY : src/RpcServerBuilder.i
+
+# target to preprocess a source file
+src/RpcServerBuilder.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerBuilder.cpp.i
+.PHONY : src/RpcServerBuilder.cpp.i
+
+src/RpcServerBuilder.s: src/RpcServerBuilder.cpp.s
+
+.PHONY : src/RpcServerBuilder.s
+
+# target to generate assembly for a file
+src/RpcServerBuilder.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerBuilder.cpp.s
+.PHONY : src/RpcServerBuilder.cpp.s
+
+src/RpcServerConnection.o: src/RpcServerConnection.cpp.o
+
+.PHONY : src/RpcServerConnection.o
+
+# target to build an object file
+src/RpcServerConnection.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerConnection.cpp.o
+.PHONY : src/RpcServerConnection.cpp.o
+
+src/RpcServerConnection.i: src/RpcServerConnection.cpp.i
+
+.PHONY : src/RpcServerConnection.i
+
+# target to preprocess a source file
+src/RpcServerConnection.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerConnection.cpp.i
+.PHONY : src/RpcServerConnection.cpp.i
+
+src/RpcServerConnection.s: src/RpcServerConnection.cpp.s
+
+.PHONY : src/RpcServerConnection.s
+
+# target to generate assembly for a file
+src/RpcServerConnection.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcServerConnection.cpp.s
+.PHONY : src/RpcServerConnection.cpp.s
+
+src/RpcUtil.o: src/RpcUtil.cpp.o
+
+.PHONY : src/RpcUtil.o
+
+# target to build an object file
+src/RpcUtil.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcUtil.cpp.o
+.PHONY : src/RpcUtil.cpp.o
+
+src/RpcUtil.i: src/RpcUtil.cpp.i
+
+.PHONY : src/RpcUtil.i
+
+# target to preprocess a source file
+src/RpcUtil.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcUtil.cpp.i
+.PHONY : src/RpcUtil.cpp.i
+
+src/RpcUtil.s: src/RpcUtil.cpp.s
+
+.PHONY : src/RpcUtil.s
+
+# target to generate assembly for a file
+src/RpcUtil.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcUtil.cpp.s
+.PHONY : src/RpcUtil.cpp.s
 
 src/RpcWatcher.o: src/RpcWatcher.cpp.o
 
@@ -725,32 +968,194 @@ src/RpcWatcher.cpp.s:
 	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcWatcher.cpp.s
 .PHONY : src/RpcWatcher.cpp.s
 
-src/RpcZooKeeper.o: src/RpcZooKeeper.cpp.o
+src/RpcZooKeeperBuilder.o: src/RpcZooKeeperBuilder.cpp.o
 
-.PHONY : src/RpcZooKeeper.o
+.PHONY : src/RpcZooKeeperBuilder.o
 
 # target to build an object file
-src/RpcZooKeeper.cpp.o:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeper.cpp.o
-.PHONY : src/RpcZooKeeper.cpp.o
+src/RpcZooKeeperBuilder.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperBuilder.cpp.o
+.PHONY : src/RpcZooKeeperBuilder.cpp.o
 
-src/RpcZooKeeper.i: src/RpcZooKeeper.cpp.i
+src/RpcZooKeeperBuilder.i: src/RpcZooKeeperBuilder.cpp.i
 
-.PHONY : src/RpcZooKeeper.i
+.PHONY : src/RpcZooKeeperBuilder.i
 
 # target to preprocess a source file
-src/RpcZooKeeper.cpp.i:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeper.cpp.i
-.PHONY : src/RpcZooKeeper.cpp.i
+src/RpcZooKeeperBuilder.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperBuilder.cpp.i
+.PHONY : src/RpcZooKeeperBuilder.cpp.i
 
-src/RpcZooKeeper.s: src/RpcZooKeeper.cpp.s
+src/RpcZooKeeperBuilder.s: src/RpcZooKeeperBuilder.cpp.s
 
-.PHONY : src/RpcZooKeeper.s
+.PHONY : src/RpcZooKeeperBuilder.s
 
 # target to generate assembly for a file
-src/RpcZooKeeper.cpp.s:
-	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeper.cpp.s
-.PHONY : src/RpcZooKeeper.cpp.s
+src/RpcZooKeeperBuilder.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperBuilder.cpp.s
+.PHONY : src/RpcZooKeeperBuilder.cpp.s
+
+src/RpcZooKeeperConnection.o: src/RpcZooKeeperConnection.cpp.o
+
+.PHONY : src/RpcZooKeeperConnection.o
+
+# target to build an object file
+src/RpcZooKeeperConnection.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperConnection.cpp.o
+.PHONY : src/RpcZooKeeperConnection.cpp.o
+
+src/RpcZooKeeperConnection.i: src/RpcZooKeeperConnection.cpp.i
+
+.PHONY : src/RpcZooKeeperConnection.i
+
+# target to preprocess a source file
+src/RpcZooKeeperConnection.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperConnection.cpp.i
+.PHONY : src/RpcZooKeeperConnection.cpp.i
+
+src/RpcZooKeeperConnection.s: src/RpcZooKeeperConnection.cpp.s
+
+.PHONY : src/RpcZooKeeperConnection.s
+
+# target to generate assembly for a file
+src/RpcZooKeeperConnection.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperConnection.cpp.s
+.PHONY : src/RpcZooKeeperConnection.cpp.s
+
+src/RpcZooKeeperServer.o: src/RpcZooKeeperServer.cpp.o
+
+.PHONY : src/RpcZooKeeperServer.o
+
+# target to build an object file
+src/RpcZooKeeperServer.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperServer.cpp.o
+.PHONY : src/RpcZooKeeperServer.cpp.o
+
+src/RpcZooKeeperServer.i: src/RpcZooKeeperServer.cpp.i
+
+.PHONY : src/RpcZooKeeperServer.i
+
+# target to preprocess a source file
+src/RpcZooKeeperServer.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperServer.cpp.i
+.PHONY : src/RpcZooKeeperServer.cpp.i
+
+src/RpcZooKeeperServer.s: src/RpcZooKeeperServer.cpp.s
+
+.PHONY : src/RpcZooKeeperServer.s
+
+# target to generate assembly for a file
+src/RpcZooKeeperServer.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/RpcZooKeeperServer.cpp.s
+.PHONY : src/RpcZooKeeperServer.cpp.s
+
+src/Service.o: src/Service.cpp.o
+
+.PHONY : src/Service.o
+
+# target to build an object file
+src/Service.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Service.cpp.o
+.PHONY : src/Service.cpp.o
+
+src/Service.i: src/Service.cpp.i
+
+.PHONY : src/Service.i
+
+# target to preprocess a source file
+src/Service.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Service.cpp.i
+.PHONY : src/Service.cpp.i
+
+src/Service.s: src/Service.cpp.s
+
+.PHONY : src/Service.s
+
+# target to generate assembly for a file
+src/Service.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Service.cpp.s
+.PHONY : src/Service.cpp.s
+
+src/ServiceDescriptor.o: src/ServiceDescriptor.cpp.o
+
+.PHONY : src/ServiceDescriptor.o
+
+# target to build an object file
+src/ServiceDescriptor.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/ServiceDescriptor.cpp.o
+.PHONY : src/ServiceDescriptor.cpp.o
+
+src/ServiceDescriptor.i: src/ServiceDescriptor.cpp.i
+
+.PHONY : src/ServiceDescriptor.i
+
+# target to preprocess a source file
+src/ServiceDescriptor.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/ServiceDescriptor.cpp.i
+.PHONY : src/ServiceDescriptor.cpp.i
+
+src/ServiceDescriptor.s: src/ServiceDescriptor.cpp.s
+
+.PHONY : src/ServiceDescriptor.s
+
+# target to generate assembly for a file
+src/ServiceDescriptor.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/ServiceDescriptor.cpp.s
+.PHONY : src/ServiceDescriptor.cpp.s
+
+src/Stub.o: src/Stub.cpp.o
+
+.PHONY : src/Stub.o
+
+# target to build an object file
+src/Stub.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Stub.cpp.o
+.PHONY : src/Stub.cpp.o
+
+src/Stub.i: src/Stub.cpp.i
+
+.PHONY : src/Stub.i
+
+# target to preprocess a source file
+src/Stub.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Stub.cpp.i
+.PHONY : src/Stub.cpp.i
+
+src/Stub.s: src/Stub.cpp.s
+
+.PHONY : src/Stub.s
+
+# target to generate assembly for a file
+src/Stub.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/Stub.cpp.s
+.PHONY : src/Stub.cpp.s
+
+src/TransportDecoder.o: src/TransportDecoder.cpp.o
+
+.PHONY : src/TransportDecoder.o
+
+# target to build an object file
+src/TransportDecoder.cpp.o:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/TransportDecoder.cpp.o
+.PHONY : src/TransportDecoder.cpp.o
+
+src/TransportDecoder.i: src/TransportDecoder.cpp.i
+
+.PHONY : src/TransportDecoder.i
+
+# target to preprocess a source file
+src/TransportDecoder.cpp.i:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/TransportDecoder.cpp.i
+.PHONY : src/TransportDecoder.cpp.i
+
+src/TransportDecoder.s: src/TransportDecoder.cpp.s
+
+.PHONY : src/TransportDecoder.s
+
+# target to generate assembly for a file
+src/TransportDecoder.cpp.s:
+	$(MAKE) -f CMakeFiles/imagine_rpc.dir/build.make CMakeFiles/imagine_rpc.dir/src/TransportDecoder.cpp.s
+.PHONY : src/TransportDecoder.cpp.s
 
 # Help Target
 help:
@@ -799,21 +1204,66 @@ help:
 	@echo "... imagine_log"
 	@echo "... imagine_muduo"
 	@echo "... imagine_zookeeper"
-	@echo "... src/Rpc.o"
-	@echo "... src/Rpc.i"
-	@echo "... src/Rpc.s"
+	@echo "... src/Builder.o"
+	@echo "... src/Builder.i"
+	@echo "... src/Builder.s"
+	@echo "... src/Context.pb.o"
+	@echo "... src/Context.pb.i"
+	@echo "... src/Context.pb.s"
+	@echo "... src/InternalMessage.pb.o"
+	@echo "... src/InternalMessage.pb.i"
+	@echo "... src/InternalMessage.pb.s"
+	@echo "... src/InternalService.o"
+	@echo "... src/InternalService.i"
+	@echo "... src/InternalService.s"
+	@echo "... src/MessageHeader.o"
+	@echo "... src/MessageHeader.i"
+	@echo "... src/MessageHeader.s"
+	@echo "... src/MethodHandler.o"
+	@echo "... src/MethodHandler.i"
+	@echo "... src/MethodHandler.s"
 	@echo "... src/RpcClient.o"
 	@echo "... src/RpcClient.i"
 	@echo "... src/RpcClient.s"
+	@echo "... src/RpcConnection.o"
+	@echo "... src/RpcConnection.i"
+	@echo "... src/RpcConnection.s"
 	@echo "... src/RpcServer.o"
 	@echo "... src/RpcServer.i"
 	@echo "... src/RpcServer.s"
+	@echo "... src/RpcServerBuilder.o"
+	@echo "... src/RpcServerBuilder.i"
+	@echo "... src/RpcServerBuilder.s"
+	@echo "... src/RpcServerConnection.o"
+	@echo "... src/RpcServerConnection.i"
+	@echo "... src/RpcServerConnection.s"
+	@echo "... src/RpcUtil.o"
+	@echo "... src/RpcUtil.i"
+	@echo "... src/RpcUtil.s"
 	@echo "... src/RpcWatcher.o"
 	@echo "... src/RpcWatcher.i"
 	@echo "... src/RpcWatcher.s"
-	@echo "... src/RpcZooKeeper.o"
-	@echo "... src/RpcZooKeeper.i"
-	@echo "... src/RpcZooKeeper.s"
+	@echo "... src/RpcZooKeeperBuilder.o"
+	@echo "... src/RpcZooKeeperBuilder.i"
+	@echo "... src/RpcZooKeeperBuilder.s"
+	@echo "... src/RpcZooKeeperConnection.o"
+	@echo "... src/RpcZooKeeperConnection.i"
+	@echo "... src/RpcZooKeeperConnection.s"
+	@echo "... src/RpcZooKeeperServer.o"
+	@echo "... src/RpcZooKeeperServer.i"
+	@echo "... src/RpcZooKeeperServer.s"
+	@echo "... src/Service.o"
+	@echo "... src/Service.i"
+	@echo "... src/Service.s"
+	@echo "... src/ServiceDescriptor.o"
+	@echo "... src/ServiceDescriptor.i"
+	@echo "... src/ServiceDescriptor.s"
+	@echo "... src/Stub.o"
+	@echo "... src/Stub.i"
+	@echo "... src/Stub.s"
+	@echo "... src/TransportDecoder.o"
+	@echo "... src/TransportDecoder.i"
+	@echo "... src/TransportDecoder.s"
 .PHONY : help
 
 

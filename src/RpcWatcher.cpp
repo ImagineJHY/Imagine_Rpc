@@ -1,5 +1,4 @@
 #include "Imagine_Rpc/RpcWatcher.h"
-#include "Imagine_Rpc/Rpc.h"
 #include "Imagine_Rpc/RpcClient.h"
 
 namespace Imagine_Rpc

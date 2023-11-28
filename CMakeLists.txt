@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 project(IMAGINE_RPC)
 
+# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -g -O0")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g -O0")
+
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -std=c++11 -Wall -Werror")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Wall -Werror")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -std=c++11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpermissive -g -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -g -std=c++11")
 
 string(ASCII 27 Esc)
 set(R "${Esc}[0;31m")
@@ -37,10 +40,10 @@ if(NOT DEFINED IMAGINE_TARGET_LIB)
 endif()
 
 # 设置动态库的TARGET的头文件, 源文件, 依赖
-file(GLOB IMAGINE_RPC_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB IMAGINE_RPC_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
 add_library(imagine_rpc SHARED ${IMAGINE_RPC_SRC_LIST})
 target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(imagine_rpc imagine_zookeeper)
+target_link_libraries(imagine_rpc protobuf imagine_zookeeper)
 
 if(TARGET imagine_zookeeper)
     target_link_libraries(imagine_rpc imagine_zookeeper)

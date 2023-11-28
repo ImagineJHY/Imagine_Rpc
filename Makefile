@@ -24,6 +24,6 @@ endif
 	cd ${tool_file_name} && make prepare
 
 build:
-	cd build && cmake .. && make imagine_muduo
+	cd build && cmake .. && make imagine_rpc
 clean:
 	cd build && make clean
