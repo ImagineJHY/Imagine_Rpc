@@ -30,7 +30,7 @@ Imagine_Muduo::Connection* RpcServerConnection::Create(std::shared_ptr<Imagine_M
 void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 {
     LOG_INFO("RpcServer Receive peer Message From %s:%s!", conn->GetPeerIp().c_str(), conn->GetPeerPort().c_str());
-    LOG_INFO("RpcServer Receive Content is : %s", conn->GetData());
+    LOG_INFO("RpcServer Receive Content is : %s, content size is %d", conn->GetData(), conn->GetMessageLen());
 
     RpcServerBuilder* builder = dynamic_cast<RpcServerBuilder*>(server_);
     if (builder == nullptr) {
@@ -57,6 +57,9 @@ void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 
     if (conn->GetMessageLen() - header_size - context->ByteSize() < context->message_size_() || 
         !TransportDecoder::MessageDecoder(conn->GetData() + header_size + context->ByteSize(), conn->GetMessageLen() - header_size - context->ByteSize(), request_msg)) {
+        if (conn->GetMessageLen() - header_size - context->ByteSize() < context->message_size_()) {
+            LOG_INFO("Condition one Not OK! msg len is %d, header_size size %ld, context bytesize is %d, context msg size is %d", conn->GetMessageLen(), header_size, context->ByteSize(), context->message_size_());
+        }
         conn->SetRevent(Imagine_Muduo::Connection::Event::Read);
         conn->IsClearReadBuffer(false);
         LOG_INFO("Request Message not Complete");
