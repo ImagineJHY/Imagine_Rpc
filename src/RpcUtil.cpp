@@ -132,6 +132,9 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
         for (int i = 0; i < ret; i++) {
             recv_content.push_back(buffer[i]);
         }
+        if (ret == -1) {
+            LOG_INFO("ret is -1, ERRORNO is %d, send content is %s", errno, send_content.c_str());
+        }
         LOG_INFO("Recv Content %s to peer, content size is %d", recv_content.c_str(), ret);
     }
 
