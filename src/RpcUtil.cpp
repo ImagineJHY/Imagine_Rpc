@@ -108,6 +108,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, struct sockadd
 std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, ConnectionStatus& conn_status, bool wait_recv)
 {
     int ret = write(*sockfd, &send_content[0], send_content.size());
+    LOG_INFO("Send Content %s to peer, ret is %d", send_content.c_str(), ret);
     if (ret == -1) {
         LOG_INFO("Communnicate write exception!");
         throw std::exception();
@@ -131,6 +132,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
         for (int i = 0; i < ret; i++) {
             recv_content.push_back(buffer[i]);
         }
+        LOG_INFO("Recv Content %s to peer, content size is %d", recv_content.c_str(), ret);
     }
 
     return recv_content;
@@ -262,6 +264,7 @@ void RpcUtil::SendMessage(const Context* request_context, const RpcMessage* requ
             LOG_INFO("Connection Close");
             return;
         }
+        LOG_INFO("Deserialize Recv Message Fail, Read Again!");
         recv_content += Readfd(&sockfd, conn_status);
     }
 }
