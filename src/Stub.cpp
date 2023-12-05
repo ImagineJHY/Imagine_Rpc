@@ -141,7 +141,7 @@ Status Stub::CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg
 
     Context request_context;
     Context response_context;
-    LOG_INFO("Call Connect Server, server ip is %s, server port is %s\n", server_ip_.c_str(), server_port_.c_str());
+    LOG_INFO("Call Connect Server, service name is %s, server ip is %s, server port is %s\n", service_name_.c_str(), server_ip_.c_str(), server_port_.c_str());
     RpcUtil::GenerateCallServerContext(&request_context, request_msg, service_name_, method_name_, server_ip_, server_port_);
     RpcUtil::SendMessage(&request_context, request_msg, &response_context, response_msg, sockfd_);
 
