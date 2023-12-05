@@ -30,6 +30,7 @@ Imagine_Muduo::Connection* RpcServerConnection::Create(std::shared_ptr<Imagine_M
 void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 {
     LOG_INFO("RpcServer Receive peer Message From %s:%s!", conn->GetPeerIp().c_str(), conn->GetPeerPort().c_str());
+    LOG_INFO("RpcServer Receive Content is : %s", conn->GetData());
 
     RpcServerBuilder* builder = dynamic_cast<RpcServerBuilder*>(server_);
     if (builder == nullptr) {
