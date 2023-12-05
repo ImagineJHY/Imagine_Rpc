@@ -92,7 +92,7 @@ class RpcZooKeeperBuilder : public Builder, public Imagine_ZooKeeper::ZooKeeperS
    std::unordered_map<int, RpcZooKeeperBuilder::RpcZKHeart *> heart_map_;
    RpcZooKeeperTimerCallback timer_callback_;
 
-   const double time_out_ = 120.0;
+   const double time_out_ = SERVER_HEARTBEAT_EXPIRE_TIME;
 };
 
 } // namespace Imagine_Rpc

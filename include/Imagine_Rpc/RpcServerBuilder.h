@@ -87,7 +87,7 @@ class RpcServerBuilder : public Builder, public Imagine_Muduo::TcpServer
    pthread_mutex_t heart_map_lock_;
    std::unordered_map<RpcServerConnection*, RpcSHeart *> heart_map_;
    RpcServerTimerCallback timer_callback_;
-   const double time_out_ = 1.0;
+   const double time_out_ = CLIENT_HEARTBEAT_EXPIRE_TIME;
 };
 
 } // namespace Imagine_Rpc

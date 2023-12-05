@@ -19,6 +19,9 @@ class RpcServerConnection;
 #define INTERNAL_DEREGISTER_METHOD_NAME INTERNAL_ZOOKEEPER_METHOD_NAME
 
 #define HEARTBEAT_INTERVAL_TIME 1
+#define CLIENT_HEARTBEAT_EXPIRE_TIME 120.0
+#define SERVER_HEARTBEAT_EXPIRE_TIME 120.0
+
 
 using RpcCallback = std::function<std::vector<std::string>(const std::vector<std::string> &)>; // 用户回调函数
 using RpcZooKeeperTimerCallback = std::function<void(int, double)>;                            // ZooKeeper心跳检测函数
