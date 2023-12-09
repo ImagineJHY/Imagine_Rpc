@@ -172,6 +172,8 @@ bool RpcUtil::Connect(const std::string &ip, const std::string &port, int *sockf
     if (ret == -1) {
         LOG_INFO("Connect Exception, ERRNO Is %d", errno);
         throw std::exception();
+    } else {
+        LOG_INFO("Connect Success!");
     }
 
     LOG_INFO("connection success!");
