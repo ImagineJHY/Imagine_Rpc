@@ -26,7 +26,7 @@ class RpcUtil
  public:
    enum class ConnectionStatus{
       Ok = 0,
-      Again = 1,
+      ReadAgain = 1,
       Close = 2
    };
 

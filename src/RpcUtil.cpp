@@ -134,7 +134,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
             {
             case 104 :
                 LOG_INFO("Server Is busy, Please Try Again!");
-                conn_status = ConnectionStatus::Again;
+                conn_status = ConnectionStatus::ReadAgain;
                 return "";
                 break;
             
@@ -252,13 +252,28 @@ std::string RpcUtil::Readfd(const int* sockfd, ConnectionStatus& conn_status)
     int ret = 1024;
     
     conn_status = ConnectionStatus::Ok;
-    while(ret != 1024) {
+    while(ret == 1024) {
         char buf[1024];
         int ret = read(*sockfd, buf, 1024);
         if (ret == 0) {
             LOG_INFO("222 Connection Close! errno is %d", errno);
             conn_status = ConnectionStatus::Close;
             return "";
+        }
+        if (ret == -1) {
+            switch (errno)
+            {
+            case 104 :
+                LOG_INFO("Server Is busy, Please Try Again!");
+                conn_status = ConnectionStatus::ReadAgain;
+                return "";
+                break;
+            
+            default:
+                LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
+                throw std::exception();
+                break;
+            }
         }
         for(int i = 0; i < ret; i++) {
             recv_content.push_back(buf[i]);
@@ -277,18 +292,17 @@ void RpcUtil::SendMessage(const Context* request_context, const RpcMessage* requ
 {
     std::string send_content;
     std::string recv_content;
-    ConnectionStatus conn_status = ConnectionStatus::Again;
+    ConnectionStatus conn_status;
     SerializeMessage(request_context, request_msg, send_content);
-    while (conn_status == ConnectionStatus::Again) {
-        recv_content = Communicate(send_content, &sockfd, conn_status);
-    }
-    while(!DeserializeMessage(recv_content, response_context, response_msg)) {
+    recv_content = Communicate(send_content, &sockfd, conn_status);
+    while(conn_status == ConnectionStatus::ReadAgain || !DeserializeMessage(recv_content, response_context, response_msg)) {
         if (conn_status == ConnectionStatus::Close) {
             LOG_INFO("Connection Close");
             return;
+        } else if (conn_status == ConnectionStatus::ReadAgain) {
+            LOG_INFO("Deserialize Recv Message Fail, Read Again!");
+            recv_content += Readfd(&sockfd, conn_status);
         }
-        LOG_INFO("Deserialize Recv Message Fail, Read Again!");
-        recv_content += Readfd(&sockfd, conn_status);
     }
 }
 
