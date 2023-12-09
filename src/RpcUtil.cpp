@@ -255,11 +255,11 @@ std::string RpcUtil::Readfd(const int* sockfd, ConnectionStatus& conn_status)
     while(ret == 1024) {
         char buf[1024];
         int ret = read(*sockfd, buf, 1024);
-        if (ret == 0) {
-            LOG_INFO("222 Connection Close! errno is %d", errno);
-            conn_status = ConnectionStatus::Close;
-            return "";
-        }
+        // if (ret == 0) {
+        //     LOG_INFO("222 Connection Close! errno is %d", errno);
+        //     conn_status = ConnectionStatus::Close;
+        //     return "";
+        // }
         if (ret == -1) {
             switch (errno)
             {
