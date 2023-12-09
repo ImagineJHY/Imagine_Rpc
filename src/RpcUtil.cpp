@@ -134,6 +134,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
             {
             case 104 :
                 LOG_INFO("Server Is busy, Please Try Again!");
+                conn_status = ConnectionStatus::Again;
                 return "";
                 break;
             
