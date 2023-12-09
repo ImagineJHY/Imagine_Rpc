@@ -110,7 +110,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
     int ret = write(*sockfd, &send_content[0], send_content.size());
     LOG_INFO("Send Content %s to peer, ret is %d", send_content.c_str(), ret);
     if (ret == -1) {
-        LOG_INFO("Communnicate write exception!");
+        LOG_INFO("Communnicate write exception!, errno is %d", errno);
         throw std::exception();
     }
     conn_status = ConnectionStatus::Ok;
