@@ -129,21 +129,21 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
             conn_status = ConnectionStatus::Close;
             return "";
         }
-        if (ret == -1) {
-            switch (errno)
-            {
-            case 104 :
-                LOG_INFO("Server Is busy, Please Try Again!");
-                conn_status = ConnectionStatus::ReadAgain;
-                return "";
-                break;
+        // if (ret == -1) {
+        //     switch (errno)
+        //     {
+        //     case 104 :
+        //         LOG_INFO("Server Is busy, Please Try Again!");
+        //         conn_status = ConnectionStatus::ReadAgain;
+        //         return "";
+        //         break;
             
-            default:
-                LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
-                throw std::exception();
-                break;
-            }
-        }
+        //     default:
+        //         LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
+        //         throw std::exception();
+        //         break;
+        //     }
+        // }
         for (int i = 0; i < ret; i++) {
             recv_content.push_back(buffer[i]);
         }
@@ -255,26 +255,26 @@ std::string RpcUtil::Readfd(const int* sockfd, ConnectionStatus& conn_status)
     while(ret == 1024) {
         char buf[1024];
         int ret = read(*sockfd, buf, 1024);
-        // if (ret == 0) {
-        //     LOG_INFO("222 Connection Close! errno is %d", errno);
-        //     conn_status = ConnectionStatus::Close;
-        //     return "";
-        // }
-        if (ret == -1) {
-            switch (errno)
-            {
-            case 104 :
-                LOG_INFO("Server Is busy, Please Try Again!");
-                conn_status = ConnectionStatus::ReadAgain;
-                return "";
-                break;
-            
-            default:
-                LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
-                throw std::exception();
-                break;
-            }
+        if (ret == 0) {
+            LOG_INFO("222 Connection Close! errno is %d", errno);
+            conn_status = ConnectionStatus::Close;
+            return "";
         }
+        // if (ret == -1) {
+        //     switch (errno)
+        //     {
+        //     case 104 :
+        //         LOG_INFO("Server Is busy, Please Try Again!");
+        //         conn_status = ConnectionStatus::ReadAgain;
+        //         return "";
+        //         break;
+            
+        //     default:
+        //         LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
+        //         throw std::exception();
+        //         break;
+        //     }
+        // }
         for(int i = 0; i < ret; i++) {
             recv_content.push_back(buf[i]);
         }
