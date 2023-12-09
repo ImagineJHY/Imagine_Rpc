@@ -170,7 +170,7 @@ bool RpcUtil::Connect(const std::string &ip, const std::string &port, int *sockf
 
     ret = connect(*sockfd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret == -1) {
-        return false;
+        LOG_INFO("Connect Exception, ERRNO Is %d", errno);
         throw std::exception();
     }
 
