@@ -1,5 +1,7 @@
 #include "Imagine_Rpc/ServiceDescriptor.h"
 
+#include "Imagine_Rpc/MethodHandler.h"
+
 namespace Imagine_Rpc
 {
 
