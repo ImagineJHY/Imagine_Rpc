@@ -1,10 +1,13 @@
 #ifndef IMAGINE_RPC_METHODHANDLER_H
 #define IMAGINE_RPC_METHODHANDLER_H
 
-#include "common_definition.h"
+#include "common_typename.h"
 
 namespace Imagine_Rpc
 {
+
+enum class Status;
+class Context;
 
 class MethodHandler
 {

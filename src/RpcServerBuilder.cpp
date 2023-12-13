@@ -2,20 +2,26 @@
 
 #include "Imagine_Rpc/InternalMessage.pb.h"
 #include "Imagine_Rpc/RpcUtil.h"
+#include "Imagine_Rpc/Service.h"
+#include "Imagine_Rpc/Context.pb.h"
+#include "Imagine_Rpc/RpcServerConnection.h"
+#include "Imagine_Rpc/ServiceDescriptor.h"
+#include "Imagine_Rpc/common_definition.h"
+#include "Imagine_Rpc/log_macro.h"
 
 namespace Imagine_Rpc
 {
 
-RpcServerBuilder::RpcServerBuilder()
+RpcServerBuilder::RpcServerBuilder() : time_out_(CLIENT_HEARTBEAT_EXPIRE_TIME)
 {
 }
 
-RpcServerBuilder::RpcServerBuilder(const std::string& profile_name) : Builder(), Imagine_Muduo::TcpServer(profile_name, new RpcServerConnection())
+RpcServerBuilder::RpcServerBuilder(const std::string& profile_name) : Builder(), Imagine_Muduo::TcpServer(profile_name, new RpcServerConnection()), time_out_(CLIENT_HEARTBEAT_EXPIRE_TIME)
 {
     Init(profile_name);
 }
 
-RpcServerBuilder::RpcServerBuilder(const YAML::Node& config) : Builder(), Imagine_Muduo::TcpServer(config, new RpcServerConnection())
+RpcServerBuilder::RpcServerBuilder(const YAML::Node& config) : Builder(), Imagine_Muduo::TcpServer(config, new RpcServerConnection()), time_out_(CLIENT_HEARTBEAT_EXPIRE_TIME)
 {
     Init(config);
 }
@@ -44,26 +50,20 @@ void RpcServerBuilder::Init(const YAML::Node& config)
     port_ = config["port"].as<std::string>();
     zookeeper_ip_ = config["zookeeper_ip"].as<std::string>();
     zookeeper_port_ = config["zookeeper_port"].as<std::string>();
-    log_name_ = config["log_name"].as<std::string>();
-    log_path_ = config["log_path"].as<std::string>();
-    max_log_file_size_ = config["max_log_file_size"].as<size_t>();
-    async_log_ = config["async_log"].as<bool>();
     singleton_log_mode_ = config["singleton_log_mode"].as<bool>();
-    log_title_ = config["log_title"].as<std::string>();
-    log_with_timestamp_ = config["log_with_timestamp"].as<bool>();
 
     if (singleton_log_mode_) {
-        logger_ = Imagine_Tool::SingletonLogger::GetInstance();
+        logger_ = SingletonLogger::GetInstance();
     } else {
-        logger_ = new Imagine_Tool::NonSingletonLogger();
-        Imagine_Tool::Logger::SetInstance(logger_);
+        logger_ = new NonSingletonLogger();
+        Logger::SetInstance(logger_);
     }
     SetDefaultTimerCallback();
 
     logger_->Init(config);
 }
 
-RpcServerBuilder* const RpcServerBuilder::RegisterService(Service* service)
+RpcServerBuilder* RpcServerBuilder::RegisterService(const Service* service)
 {
     Builder::RegisterService(service);
     if (zookeeper_ip_.size() && zookeeper_port_.size()) {
@@ -85,7 +85,7 @@ RpcServerBuilder* const RpcServerBuilder::RegisterService(Service* service)
     return this;
 }
 
-RpcServerBuilder* const RpcServerBuilder::DeregisterService(Service* service)
+RpcServerBuilder* RpcServerBuilder::DeregisterService(const Service* service)
 {
     Builder::DeregisterService(service->GetServiceDescriptor()->GetServiceName());
     if (zookeeper_ip_.size() && zookeeper_port_.size()) {
@@ -107,18 +107,18 @@ RpcServerBuilder* const RpcServerBuilder::DeregisterService(Service* service)
 
 void RpcServerBuilder::SetDefaultTimerCallback()
 {
-    timer_callback_ = [this](RpcServerConnection* conn, double time_out)
+    timer_callback_ = [this](const RpcServerConnection* conn, double time_out)
     {
-        LOG_INFO("this is RpcServer TimerCallback!");
+        IMAGINE_RPC_LOG("this is RpcServer TimerCallback!");
 
         long long last_request_time;
         if (!GetHeartNodeInfo(conn, last_request_time)) {
             return;
         }
 
-        if (Imagine_Tool::TimeUtil::GetNow() > Imagine_Tool::TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
+        if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            LOG_INFO("RpcServer Timer Set offline!");
+            IMAGINE_RPC_LOG("RpcServer Timer Set offline!");
             CloseConnection(conn->GetIp(), conn->GetPort());
             this->DeleteUser(conn);
             return;
@@ -128,10 +128,10 @@ void RpcServerBuilder::SetDefaultTimerCallback()
     };
 }
 
-bool RpcServerBuilder::UpdatetUser(RpcServerConnection* conn)
+RpcServerBuilder* RpcServerBuilder::UpdatetUser(const RpcServerConnection* conn)
 {
     pthread_mutex_lock(&heart_map_lock_);
-    std::unordered_map<RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
+    std::unordered_map<const RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
     if (it == heart_map_.end()) {
         RpcSHeart *new_heart = new RpcSHeart(SetTimer(std::bind(timer_callback_, conn, time_out_), 1.0, 0.0));
         heart_map_.insert(std::make_pair(conn, new_heart));
@@ -140,15 +140,15 @@ bool RpcServerBuilder::UpdatetUser(RpcServerConnection* conn)
     }
     pthread_mutex_unlock(&heart_map_lock_);
 
-    return true;
+    return this;
 }
 
-bool RpcServerBuilder::DeleteUser(RpcServerConnection* conn)
+RpcServerBuilder* RpcServerBuilder::DeleteUser(const RpcServerConnection* conn)
 {
     pthread_mutex_lock(&heart_map_lock_);
-    std::unordered_map<RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
+    std::unordered_map<const RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
     if (it == heart_map_.end()) {
-        return false; // 已删除
+        return this; // 已删除
         throw std::exception();
     }
     RpcSHeart *heart_node = it->second;
@@ -157,13 +157,13 @@ bool RpcServerBuilder::DeleteUser(RpcServerConnection* conn)
     delete heart_node;
     pthread_mutex_unlock(&heart_map_lock_);
 
-    return true;
+    return this;
 }
 
-bool RpcServerBuilder::GetHeartNodeInfo(RpcServerConnection* conn, long long &last_request_time)
+bool RpcServerBuilder::GetHeartNodeInfo(const RpcServerConnection* conn, long long &last_request_time)
 {
     pthread_mutex_lock(&heart_map_lock_);
-    std::unordered_map<RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
+    std::unordered_map<const RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
     if (it == heart_map_.end()) {
         // 已删除
         pthread_mutex_unlock(&heart_map_lock_);
@@ -175,10 +175,10 @@ bool RpcServerBuilder::GetHeartNodeInfo(RpcServerConnection* conn, long long &la
     return true;
 }
 
-long long RpcServerBuilder::GetHeartNodeLastRequestTime(RpcServerConnection* conn)
+long long RpcServerBuilder::GetHeartNodeLastRequestTime(const RpcServerConnection* conn)
 {
     pthread_mutex_lock(&heart_map_lock_);
-    std::unordered_map<RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
+    std::unordered_map<const RpcServerConnection*, RpcSHeart *>::iterator it = heart_map_.find(conn);
     if (it == heart_map_.end()) {
         // 已删除
         pthread_mutex_unlock(&heart_map_lock_);
@@ -192,7 +192,7 @@ long long RpcServerBuilder::GetHeartNodeLastRequestTime(RpcServerConnection* con
 
 void RpcServerBuilder::HeartBeatPacketSender(int sockfd)
 {
-    LOG_INFO("Send HeartBeat Packet!");
+    IMAGINE_RPC_LOG("Send HeartBeat Packet!");
     Context request_context;
     Internal::InternalMessage request_msg;
     Context response_context;

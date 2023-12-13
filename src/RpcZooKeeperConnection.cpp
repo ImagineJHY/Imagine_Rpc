@@ -2,6 +2,11 @@
 
 #include "Imagine_Rpc/Context.pb.h"
 #include "Imagine_Rpc/RpcZooKeeperBuilder.h"
+#include "Imagine_Rpc/TransportDecoder.h"
+#include "Imagine_Rpc/RpcUtil.h"
+#include "Imagine_Rpc/MethodHandler.h"
+#include "Imagine_Rpc/ServiceDescriptor.h"
+#include "Imagine_Rpc/log_macro.h"
 
 namespace Imagine_Rpc
 {
@@ -22,14 +27,14 @@ RpcZooKeeperConnection::~RpcZooKeeperConnection()
 {
 }
 
-Imagine_Muduo::Connection* RpcZooKeeperConnection::Create(std::shared_ptr<Imagine_Muduo::Channel> channel)
+Imagine_Muduo::Connection* RpcZooKeeperConnection::Create(const std::shared_ptr<Imagine_Muduo::Channel>& channel) const
 {
     return new RpcZooKeeperConnection(server_, channel);
 }
 
 void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
 {
-    LOG_INFO("this is RpcZooKeeper!");
+    IMAGINE_RPC_LOG("this is RpcZooKeeper!");
 
     RpcZooKeeperBuilder* builder = dynamic_cast<RpcZooKeeperBuilder*>(server_);
     if (builder == nullptr) {
@@ -42,7 +47,7 @@ void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn
     if (!TransportDecoder::ContextDecoder(conn->GetData(), conn->GetMessageLen(), context, &header_size)) {
         conn->SetRevent(Imagine_Muduo::Connection::Event::Read);
         conn->IsClearReadBuffer(false);
-        LOG_INFO("Context not Complete");
+        IMAGINE_RPC_LOG("Context not Complete");
 
         return;
     }
@@ -56,7 +61,7 @@ void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn
         !TransportDecoder::MessageDecoder(conn->GetData() + header_size + context->ByteSize(), conn->GetMessageLen() - header_size - context->ByteSize(), request_msg)) {
         conn->SetRevent(Imagine_Muduo::Connection::Event::Read);
         conn->IsClearReadBuffer(false);
-        LOG_INFO("Request Message not Complete");
+        IMAGINE_RPC_LOG("Request Message not Complete");
 
         delete context;
         delete request_msg;

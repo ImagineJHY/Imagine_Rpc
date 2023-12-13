@@ -1,8 +1,7 @@
 #ifndef IMAGINE_RPC_RPCUTIL_H
 #define IMAGINE_RPC_RPCUTIL_H
 
-#include "Imagine_Muduo/EventLoop.h"
-#include "common_definition.h"
+#include "common_typename.h"
 
 #include <string>
 #include <vector>
@@ -11,20 +10,23 @@
 #include <sys/types.h>
 #include <functional>
 
-using namespace Imagine_Muduo;
-
 namespace Imagine_Rpc
 {
 
+class Context;
+
 namespace Internal
 {
+
 class InternalMessage;
+
 } // namespace Internal
 
 class RpcUtil
 {
  public:
-   enum class ConnectionStatus{
+   enum class ConnectionStatus
+   {
       Ok = 0,
       ReadAgain = 1,
       Close = 2

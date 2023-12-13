@@ -19,7 +19,7 @@ RpcConnection::~RpcConnection()
 {
 }
 
-Imagine_Muduo::Connection* RpcConnection::Create(std::shared_ptr<Imagine_Muduo::Channel> channel)
+Imagine_Muduo::Connection* RpcConnection::Create(const std::shared_ptr<Imagine_Muduo::Channel>& channel) const
 {
     return new RpcConnection(server_, channel);
 }

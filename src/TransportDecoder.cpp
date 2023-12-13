@@ -1,6 +1,5 @@
 #include "Imagine_Rpc/TransportDecoder.h"
 
-#include "Imagine_Rpc/Builder.h"
 #include "Imagine_Rpc/Context.pb.h"
 #include "Imagine_Rpc/MessageHeader.h"
 

@@ -1,20 +1,24 @@
 #include "Imagine_Rpc/RpcZooKeeperBuilder.h"
 
-#include "Imagine_ZooKeeper/ZooKeeperUtil.h"
+#include "Imagine_Rpc/RpcZooKeeperConnection.h"
+#include "Imagine_Rpc/common_definition.h"
+#include "Imagine_Rpc/InternalService.h"
+#include "Imagine_Rpc/RpcWatcher.h"
+#include "Imagine_Rpc/log_macro.h"
 
 namespace Imagine_Rpc
 {
 
-RpcZooKeeperBuilder::RpcZooKeeperBuilder()
+RpcZooKeeperBuilder::RpcZooKeeperBuilder() : time_out_(SERVER_HEARTBEAT_EXPIRE_TIME)
 {
 }
 
-RpcZooKeeperBuilder::RpcZooKeeperBuilder(const std::string& profile_name) : Builder(), Imagine_ZooKeeper::ZooKeeperServer(profile_name, new RpcZooKeeperConnection())
+RpcZooKeeperBuilder::RpcZooKeeperBuilder(const std::string& profile_name) : Builder(), Imagine_ZooKeeper::ZooKeeperServer(profile_name, new RpcZooKeeperConnection()), time_out_(SERVER_HEARTBEAT_EXPIRE_TIME)
 {
     Init();
 }
 
-RpcZooKeeperBuilder::RpcZooKeeperBuilder(const YAML::Node& config) : Builder(), Imagine_ZooKeeper::ZooKeeperServer(config, new RpcZooKeeperConnection())
+RpcZooKeeperBuilder::RpcZooKeeperBuilder(const YAML::Node& config) : Builder(), Imagine_ZooKeeper::ZooKeeperServer(config, new RpcZooKeeperConnection()), time_out_(SERVER_HEARTBEAT_EXPIRE_TIME)
 {
     Init();
 }
@@ -38,30 +42,30 @@ void RpcZooKeeperBuilder::SetDefaultTimerCallback()
 {
     timer_callback_ = [this](int sockfd, double time_out)
     {
-        LOG_INFO("RpcZooKeeper TimerCallback!");
+        IMAGINE_RPC_LOG("RpcZooKeeper TimerCallback!");
 
         std::string cluster_name;
         long long last_request_time;
         std::pair<std::string, std::string> stat;
         if (!GetHeartNodeInfo(sockfd, cluster_name, last_request_time, stat)) {
-            LOG_INFO("Timer Removed already!");
+            IMAGINE_RPC_LOG("Timer Removed already!");
             return;
         }
 
-        if (Imagine_Tool::TimeUtil::GetNow() > Imagine_Tool::TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
+        if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            LOG_INFO("RpcZooKeeper Timer Set offline!");
+            IMAGINE_RPC_LOG("RpcZooKeeper Timer Set offline!");
             // this->loop_->Closefd(sockfd);
             DeRegister(cluster_name, stat.first, stat.second, sockfd);
             return;
         } else {
-            LOG_INFO("Timer keep going!");
+            IMAGINE_RPC_LOG("Timer keep going!");
             // 未过期,忽略
         }
     };
 }
 
-RpcZooKeeperTimerCallback RpcZooKeeperBuilder::GetTimerCallback()
+RpcZooKeeperTimerCallback RpcZooKeeperBuilder::GetTimerCallback() const
 {
     return timer_callback_;
 }

@@ -1,14 +1,15 @@
 #ifndef IMAGINE_RPC_RPCSERVERBUILDER_H
 #define IMAGINE_RPC_RPCSERVERBUILDER_H
 
-#include "Imagine_Log/Logger.h"
-#include "Imagine_Muduo/EventLoop.h"
-#include "Imagine_Muduo/TcpServer.h"
 #include "Builder.h"
-#include "RpcServerConnection.h"
+#include "common_typename.h"
+
+#include "Imagine_Muduo/Imagine_Muduo.h"
 
 namespace Imagine_Rpc
 {
+
+class RpcServerConnection;
 
 class RpcServerBuilder : public Builder, public Imagine_Muduo::TcpServer
 {
@@ -16,13 +17,15 @@ class RpcServerBuilder : public Builder, public Imagine_Muduo::TcpServer
    class RpcSHeart
    {
     public:
-      RpcSHeart(long long timerId, long long time = Imagine_Tool::TimeUtil::GetNow())
-            : timerId_(timerId), last_request_time_(time) {}
-
-      bool ReSetLastRequestTime()
+      RpcSHeart(long long timerId, long long time = TimeUtil::GetNow()) : timerId_(timerId), last_request_time_(time) 
       {
-            last_request_time_ = Imagine_Tool::TimeUtil::GetNow();
-            return true;
+      }
+
+      RpcSHeart* ReSetLastRequestTime()
+      {
+            last_request_time_ = TimeUtil::GetNow();
+
+            return this;
       }
 
       long long GetLastRequestTime()
@@ -53,41 +56,38 @@ class RpcServerBuilder : public Builder, public Imagine_Muduo::TcpServer
 
    void Init(const YAML::Node& config);
 
-   RpcServerBuilder* const RegisterService(Service* service);
+   RpcServerBuilder* RegisterService(const Service* service);
 
-   RpcServerBuilder* const DeregisterService(Service* service);
+   RpcServerBuilder* DeregisterService(const Service* service);
 
    void SetDefaultTimerCallback();
 
-   bool UpdatetUser(RpcServerConnection* conn);
+   RpcServerBuilder* UpdatetUser(const RpcServerConnection* conn);
 
-   bool DeleteUser(RpcServerConnection* conn);
+   RpcServerBuilder* DeleteUser(const RpcServerConnection* conn);
 
-   bool GetHeartNodeInfo(RpcServerConnection* conn, long long &last_request_time);
+   bool GetHeartNodeInfo(const RpcServerConnection* conn, long long &last_request_time);
 
-   long long GetHeartNodeLastRequestTime(RpcServerConnection* conn);
+   long long GetHeartNodeLastRequestTime(const RpcServerConnection* conn);
 
+   // 向ZK发送心跳包的回调函数
    void HeartBeatPacketSender(int sockfd);
 
  private:
-   std::string ip_;
-   std::string port_;
-   std::string zookeeper_ip_;
-   std::string zookeeper_port_;
-   std::string log_name_;
-   std::string log_path_;
-   size_t max_log_file_size_;
-   bool async_log_;
-   bool singleton_log_mode_;
-   std::string log_title_;
-   bool log_with_timestamp_;
-   Imagine_Tool::Logger* logger_;
+   // 配置文件参数
+   std::string ip_;                                                           // IP
+   std::string port_;                                                         // Port
+   std::string zookeeper_ip_;                                                 // ZK的IP
+   std::string zookeeper_port_;                                               // ZK的Port
+   bool singleton_log_mode_;                                                  // 日志模式(目前仅支持单例)
+
+   Logger* logger_;                                                           // 日志对象
 
  private:
-   pthread_mutex_t heart_map_lock_;
-   std::unordered_map<RpcServerConnection*, RpcSHeart *> heart_map_;
-   RpcServerTimerCallback timer_callback_;
-   const double time_out_ = CLIENT_HEARTBEAT_EXPIRE_TIME;
+   pthread_mutex_t heart_map_lock_;                                           // heart_map_的锁
+   std::unordered_map<const RpcServerConnection*, RpcSHeart *> heart_map_;    // 所有建立连接的客户端集合
+   RpcServerTimerCallback timer_callback_;                                    // 对与服务端建立连接的客户端进行定期心跳检测的回调函数
+   const double time_out_;                                                    // 连接过期事件(暂不支持调整)
 };
 
 } // namespace Imagine_Rpc

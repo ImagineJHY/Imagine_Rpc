@@ -1,18 +1,19 @@
 #ifndef IMAGINE_RPC_INTERNALSERVICE_H
 #define IMAGINE_RPC_INTERNALSERVICE_H
 
-#include "common_definition.h"
 #include "Service.h"
-#include "InternalMessage.pb.h"
 
 namespace Imagine_Rpc
 {
 
 class RpcZooKeeperBuilder;
 class Context;
+enum class Status;
 
 namespace Internal
 {
+
+class InternalMessage;
 
 class InternalService : public Service
 {

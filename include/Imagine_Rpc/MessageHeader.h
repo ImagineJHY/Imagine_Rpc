@@ -1,8 +1,6 @@
 #ifndef IMAGINE_RPC_MESSAGEHEADER_H
 #define IMAGINE_RPC_MESSAGEHEADER_H
 
-#include "RpcUtil.h"
-
 #include <unistd.h>
 #include <string>
 
@@ -18,19 +16,19 @@ class MessageHeader
 
     ~MessageHeader();
 
-    std::string SerializeToString();
+    std::string SerializeToString() const;
 
-    bool AppendToString(std::string& str);
+    const MessageHeader* AppendToString(std::string& str) const;
 
     bool ParseFromString(const std::string& str);
 
     bool ParseFromArray(const char* buf, size_t buf_size);
 
-    size_t GetHeaderSize();
+    size_t GetHeaderSize() const;
 
-    size_t GetContextSize();
+    size_t GetContextSize() const;
 
-    size_t GetMessageSize();
+    size_t GetMessageSize() const;
 
  private:
     size_t header_size_;

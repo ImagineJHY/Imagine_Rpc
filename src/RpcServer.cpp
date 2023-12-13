@@ -1,6 +1,9 @@
 #include "Imagine_Rpc/RpcServer.h"
 
 #include "Imagine_Rpc/RpcServerBuilder.h"
+#include "Imagine_Rpc/Service.h"
+#include "Imagine_Rpc/ServiceDescriptor.h"
+#include "Imagine_Rpc/log_macro.h"
 
 namespace Imagine_Rpc
 {
@@ -25,22 +28,22 @@ RpcServer::~RpcServer()
 {
 }
 
-RpcServer* const RpcServer::Start()
+RpcServer* RpcServer::Start() const
 {
     builder_->Start();
 }
 
-RpcServer* const RpcServer::RegisterService(Service* service)
+const RpcServer* RpcServer::RegisterService(Service* service) const
 {
     if (builder_) {
         builder_->RegisterService(service);
-        LOG_INFO("Register Service %s Success!", service->GetServiceDescriptor()->GetServiceName().c_str());
+        IMAGINE_RPC_LOG("Register Service %s Success!", service->GetServiceDescriptor()->GetServiceName().c_str());
     }
 
     return this;
 }
 
-RpcServer* const RpcServer::DeregisterService(Service* service)
+RpcServer* RpcServer::DeregisterService(Service* service)
 {
     if (builder_) {
         builder_->DeregisterService(service);
@@ -49,7 +52,7 @@ RpcServer* const RpcServer::DeregisterService(Service* service)
     return this;
 }
 
-long long RpcServer::SetTimer(Imagine_Tool::TimerCallback timer_callback, double interval, double delay)
+long long RpcServer::SetTimer(TimerCallback timer_callback, double interval, double delay)
 {
     if (builder_) {
         return builder_->SetTimer(timer_callback, interval, delay);

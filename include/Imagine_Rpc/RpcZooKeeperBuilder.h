@@ -1,15 +1,15 @@
 #ifndef IMAGINE_RPC_RPCZOOKEEPERBUILDER_H
 #define IMAGINE_RPC_RPCZOOKEEPERBUILDER_H
 
-#include "Imagine_ZooKeeper/ZooKeeperServer.h"
-#include "RpcWatcher.h"
 #include "Builder.h"
-#include "Imagine_Rpc/RpcUtil.h"
-#include "RpcZooKeeperConnection.h"
-#include "InternalService.h"
+#include "common_typename.h"
+
+#include "Imagine_ZooKeeper/Imagine_ZooKeeper.h"
 
 namespace Imagine_Rpc
 {
+
+class RpcWatcher;
 
 class RpcZooKeeperBuilder : public Builder, public Imagine_ZooKeeper::ZooKeeperServer
 {
@@ -18,12 +18,15 @@ class RpcZooKeeperBuilder : public Builder, public Imagine_ZooKeeper::ZooKeeperS
    {
     public:
       RpcZKHeart(const std::string &cluster_name, const std::pair<std::string, std::string> &stat, long long timerfd, long long time = NOW_MS)
-         : timerfd_(timerfd), last_request_time_(time), cluster_name_(cluster_name), znode_stat_(stat) {}
-
-      bool ReSetLastRequestTime()
+                  : timerfd_(timerfd), last_request_time_(time), cluster_name_(cluster_name), znode_stat_(stat)
       {
-         last_request_time_ = Imagine_Tool::TimeUtil::GetNow();
-         return true;
+      }
+
+      RpcZKHeart* ReSetLastRequestTime()
+      {
+         last_request_time_ = TimeUtil::GetNow();
+
+         return this;
       }
 
       long long GetLastRequestTime()
@@ -66,7 +69,7 @@ class RpcZooKeeperBuilder : public Builder, public Imagine_ZooKeeper::ZooKeeperS
 
    void SetDefaultTimerCallback();
 
-   RpcZooKeeperTimerCallback GetTimerCallback();
+   RpcZooKeeperTimerCallback GetTimerCallback() const;
 
    // 注册服务
    bool Register(const std::string &method, const std::string &ip, const std::string &port, int sockfd);
@@ -92,7 +95,7 @@ class RpcZooKeeperBuilder : public Builder, public Imagine_ZooKeeper::ZooKeeperS
    std::unordered_map<int, RpcZooKeeperBuilder::RpcZKHeart *> heart_map_;
    RpcZooKeeperTimerCallback timer_callback_;
 
-   const double time_out_ = SERVER_HEARTBEAT_EXPIRE_TIME;
+   const double time_out_;
 };
 
 } // namespace Imagine_Rpc

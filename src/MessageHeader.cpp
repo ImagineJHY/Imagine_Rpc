@@ -1,5 +1,8 @@
 #include "Imagine_Rpc/MessageHeader.h"
 
+#include "Imagine_Rpc/RpcUtil.h"
+#include "Imagine_Rpc/common_definition.h"
+
 namespace Imagine_Rpc
 {
 
@@ -15,25 +18,25 @@ MessageHeader::~MessageHeader()
 {
 }
 
-std::string MessageHeader::SerializeToString()
+std::string MessageHeader::SerializeToString() const
 {
     // protobuf序列化结果可能为0, 暂时不检查
     // if (!context_size_ || !msg_size_) {
     //     throw std::exception();
     // }
 
-    return RpcUtil::IntToString(context_size_) + "\r\n" + RpcUtil::IntToString(msg_size_) + "\r\n";
+    return RpcUtil::IntToString(context_size_) + MESSAGE_HEADER_DIVIDER + RpcUtil::IntToString(msg_size_) + MESSAGE_HEADER_DIVIDER;
 }
 
-bool MessageHeader::AppendToString(std::string& str)
+const MessageHeader* MessageHeader::AppendToString(std::string& str) const
 {
     // protobuf序列化结果可能为0, 暂时不检查
     // if (!context_size_ || !msg_size_) {
     //     throw std::exception();
     // }
-    str += RpcUtil::IntToString(context_size_) + "\r\n" + RpcUtil::IntToString(msg_size_) + "\r\n";
+    str += RpcUtil::IntToString(context_size_) + MESSAGE_HEADER_DIVIDER + RpcUtil::IntToString(msg_size_) + MESSAGE_HEADER_DIVIDER;
 
-    return true;
+    return this;
 }
 
 bool MessageHeader::ParseFromString(const std::string& str)
@@ -92,17 +95,17 @@ bool MessageHeader::ParseFromArray(const char* buf, size_t buf_size)
     return true;
 }
 
-size_t MessageHeader::GetHeaderSize()
+size_t MessageHeader::GetHeaderSize() const
 {
     return header_size_;
 }
 
-size_t MessageHeader::GetContextSize()
+size_t MessageHeader::GetContextSize() const
 {
     return context_size_;
 }
 
-size_t MessageHeader::GetMessageSize()
+size_t MessageHeader::GetMessageSize() const
 {
     return msg_size_;
 }
