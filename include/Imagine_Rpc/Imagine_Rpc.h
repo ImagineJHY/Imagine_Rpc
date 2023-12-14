@@ -3,6 +3,7 @@
 
 #include "Stub.h"
 #include "Service.h"
+#include "Context.pb.h"
 #include "RpcServer.h"
 #include "RpcZooKeeperBuilder.h"
 #include "log_macro.h"
