@@ -24,12 +24,12 @@ Imagine_Muduo::Connection* RpcConnection::Create(const std::shared_ptr<Imagine_M
     return new RpcConnection(server_, channel);
 }
 
-void RpcConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
+void RpcConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn) const
 {
     return;
 }
 
-void RpcConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn)
+void RpcConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn) const
 {
     return;
 }

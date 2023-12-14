@@ -19,9 +19,9 @@ class RpcConnection : public Imagine_Muduo::TcpConnection
 
     Imagine_Muduo::Connection* Create(const std::shared_ptr<Imagine_Muduo::Channel>& channel) const;
 
-    void DefaultReadCallback(Imagine_Muduo::Connection* conn);
+    void DefaultReadCallback(Imagine_Muduo::Connection* conn) const;
 
-    void DefaultWriteCallback(Imagine_Muduo::Connection* conn);
+    void DefaultWriteCallback(Imagine_Muduo::Connection* conn) const;
 };
 
 } // namespace Imagine_Rpc

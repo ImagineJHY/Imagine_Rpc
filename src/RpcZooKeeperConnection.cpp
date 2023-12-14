@@ -32,7 +32,7 @@ Imagine_Muduo::Connection* RpcZooKeeperConnection::Create(const std::shared_ptr<
     return new RpcZooKeeperConnection(server_, channel);
 }
 
-void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
+void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn) const
 {
     IMAGINE_RPC_LOG("this is RpcZooKeeper!");
 
@@ -88,7 +88,7 @@ void RpcZooKeeperConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn
     delete response_msg;
 }
 
-void RpcZooKeeperConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn)
+void RpcZooKeeperConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn) const
 {
     conn->IsClearWriteBuffer(true);
     conn->SetRevent(Imagine_Muduo::Connection::Event::Read);

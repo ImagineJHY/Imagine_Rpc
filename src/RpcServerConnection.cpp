@@ -32,7 +32,7 @@ Imagine_Muduo::Connection* RpcServerConnection::Create(const std::shared_ptr<Ima
     return new RpcServerConnection(server_, channel);
 }
 
-void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
+void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn) const
 {
     IMAGINE_RPC_LOG("RpcServer Receive peer Message From %s:%s!", conn->GetPeerIp().c_str(), conn->GetPeerPort().c_str());
     IMAGINE_RPC_LOG("RpcServer Receive Content is : %s, content size is %d", conn->GetData(), conn->GetMessageLen());
@@ -92,7 +92,7 @@ void RpcServerConnection::DefaultReadCallback(Imagine_Muduo::Connection* conn)
     delete response_msg;
 }
 
-void RpcServerConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn)
+void RpcServerConnection::DefaultWriteCallback(Imagine_Muduo::Connection* conn) const
 {
     conn->IsClearWriteBuffer(true);
     conn->SetRevent(Imagine_Muduo::Connection::Event::Read);
