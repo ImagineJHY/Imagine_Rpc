@@ -2,6 +2,8 @@
 #define IMAGINE_RPC_COMMON_DEFINITION_H
 
 // 外部使用时需要用到的类型定义以及宏
+#include "Service.h"
+#include "RpcMethodHandler.h"
 
 namespace Imagine_Rpc
 {
