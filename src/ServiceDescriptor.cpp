@@ -20,7 +20,7 @@ ServiceDescriptor::~ServiceDescriptor()
     }
 }
 
-const std::string& ServiceDescriptor::GetServiceName() const
+std::string ServiceDescriptor::GetServiceName() const
 {
     return service_name_;
 }

@@ -18,7 +18,7 @@ class ServiceDescriptor
 
     ~ServiceDescriptor();
 
-    const std::string& GetServiceName() const;
+   std::string GetServiceName() const;
 
     const std::unordered_map<std::string, MethodHandler*>& GetMethodHandlers() const;
 
