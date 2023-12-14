@@ -2,6 +2,7 @@
 #define IMAGINE_RPC_IMAGINE_RPC_H
 
 #include "Stub.h"
+#include "Service.h"
 #include "RpcServer.h"
 #include "RpcZooKeeperBuilder.h"
 #include "log_macro.h"
