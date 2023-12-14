@@ -3,9 +3,9 @@
 
 #include "Stub.h"
 #include "Service.h"
-#include "Context.pb.h"
 #include "RpcServer.h"
+#include "Context.pb.h"
+#include "common_definition.h"
 #include "RpcZooKeeperBuilder.h"
-#include "log_macro.h"
 
 #endif
