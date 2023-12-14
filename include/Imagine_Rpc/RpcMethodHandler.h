@@ -1,9 +1,8 @@
 #ifndef IMAGINE_RPC_RPCMETHODHANDLER_H
 #define IMAGINE_RPC_RPCMETHODHANDLER_H
 
-#include "MethodHandler.h"
-
 #include "log_macro.h"
+#include "MethodHandler.h"
 
 namespace Imagine_Rpc
 {

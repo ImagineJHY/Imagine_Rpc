@@ -1,7 +1,7 @@
 #include "Imagine_Rpc/Builder.h"
 
-#include "Imagine_Rpc/log_macro.h"
 #include "Imagine_Rpc/Service.h"
+#include "Imagine_Rpc/log_macro.h"
 #include "Imagine_Rpc/ServiceDescriptor.h"
 
 namespace Imagine_Rpc

@@ -1,13 +1,13 @@
 #ifndef IMAGINE_RPC_COMMON_TYPENAME_H
 #define IMAGINE_RPC_COMMON_TYPENAME_H
 
-#include "Imagine_Time/Imagine_Time.h"
 #include "Imagine_Log/Imagine_Log.h"
+#include "Imagine_Time/Imagine_Time.h"
 
 #include <google/protobuf/message.h>
 
-#include <functional>
 #include <vector>
+#include <functional>
 
 namespace Imagine_Rpc
 {

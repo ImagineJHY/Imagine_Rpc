@@ -1,7 +1,7 @@
 #include "Imagine_Rpc/MessageHeader.h"
 
 #include "Imagine_Rpc/RpcUtil.h"
-#include "Imagine_Rpc/common_definition.h"
+#include "Imagine_Rpc/common_macro.h"
 
 namespace Imagine_Rpc
 {

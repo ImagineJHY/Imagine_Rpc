@@ -1,8 +1,8 @@
 #ifndef IMAGINE_RPC_MESSAGEHEADER_H
 #define IMAGINE_RPC_MESSAGEHEADER_H
 
-#include <unistd.h>
 #include <string>
+#include <unistd.h>
 
 namespace Imagine_Rpc
 {

@@ -1,12 +1,12 @@
 #include "Imagine_Rpc/RpcServerConnection.h"
 
 #include "Imagine_Rpc/RpcUtil.h"
+#include "Imagine_Rpc/log_macro.h"
 #include "Imagine_Rpc/Context.pb.h"
 #include "Imagine_Rpc/MethodHandler.h"
-#include "Imagine_Rpc/ServiceDescriptor.h"
 #include "Imagine_Rpc/TransportDecoder.h"
 #include "Imagine_Rpc/RpcServerBuilder.h"
-#include "Imagine_Rpc/log_macro.h"
+#include "Imagine_Rpc/ServiceDescriptor.h"
 
 namespace Imagine_Rpc
 {

@@ -4,9 +4,9 @@
 #include "common_typename.h"
 
 #include <string>
-#include <functional>
 #include <thread>
 #include <vector>
+#include <functional>
 
 namespace Imagine_Rpc
 {

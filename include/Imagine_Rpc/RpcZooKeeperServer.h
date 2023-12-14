@@ -1,9 +1,9 @@
 #ifndef IMAGINE_RPC_RPCZOOKEEPERSERVER_H
 #define IMAGINE_RPC_RPCZOOKEEPERSERVER_H
 
-#include <unordered_map>
-#include <string>
 #include <list>
+#include <string>
+#include <unordered_map>
 
 namespace Imagine_Rpc
 {

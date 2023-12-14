@@ -5,10 +5,10 @@
 
 #include <string>
 #include <vector>
+#include <functional>
+#include <sys/types.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <sys/types.h>
-#include <functional>
 
 namespace Imagine_Rpc
 {

@@ -1,10 +1,10 @@
 #include "Imagine_Rpc/RpcZooKeeperBuilder.h"
 
-#include "Imagine_Rpc/RpcZooKeeperConnection.h"
-#include "Imagine_Rpc/common_definition.h"
-#include "Imagine_Rpc/InternalService.h"
-#include "Imagine_Rpc/RpcWatcher.h"
 #include "Imagine_Rpc/log_macro.h"
+#include "Imagine_Rpc/RpcWatcher.h"
+#include "Imagine_Rpc/common_macro.h"
+#include "Imagine_Rpc/InternalService.h"
+#include "Imagine_Rpc/RpcZooKeeperConnection.h"
 
 namespace Imagine_Rpc
 {
