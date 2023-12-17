@@ -1,12 +1,15 @@
 #include "Imagine_Rpc/RpcWatcher.h"
-#include "Imagine_Rpc/RpcClient.h"
 
 namespace Imagine_Rpc
 {
 
-RpcWatcher::RpcWatcher(std::string ip, std::string port) : ip_(ip), port_(port) {};
+RpcWatcher::RpcWatcher(const std::string& ip, const std::string& port) : ip_(ip), port_(port)
+{
+}
 
-RpcWatcher::~RpcWatcher() {};
+RpcWatcher::~RpcWatcher()
+{
+}
 
 void RpcWatcher::Update(const std::string &send_content)
 {

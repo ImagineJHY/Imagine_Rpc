@@ -1,20 +1,19 @@
 #ifndef IMAGINE_RPC_RPCWATCHER_H
 #define IMAGINE_RPC_RPCWATCHER_H
 
-#include "Imagine_ZooKeeper/Watcher.h"
+#include "Imagine_ZooKeeper/Imagine_ZooKeeper.h"
 
 #include <string>
 
-using namespace Imagine_ZooKeeper;
 
 namespace Imagine_Rpc
 {
 
-class RpcWatcher : public Watcher
+class RpcWatcher : public Imagine_ZooKeeper::Watcher
 {
 
  public:
-    RpcWatcher(std::string ip, std::string port);
+    RpcWatcher(const std::string& ip, const std::string& port);
 
     void Update(const std::string &send_content);
 

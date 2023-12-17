@@ -1,13 +1,12 @@
 #ifndef IMAGINE_RPC_TRANSPORTDECODER_H
 #define IMAGINE_RPC_TRANSPORTDECODER_H
 
-#include "Imagine_Muduo/TcpConnection.h"
-#include "common_definition.h"
-#include "Context.pb.h"
+#include "common_typename.h"
 
 namespace Imagine_Rpc
 {
 
+class Context;
 class Builder;
 
 class TransportDecoder

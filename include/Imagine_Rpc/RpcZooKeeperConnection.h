@@ -2,7 +2,6 @@
 #define IMAGINE_RPC_RPCZOOKEEPERCONNECTION_H
 
 #include "RpcConnection.h"
-#include "RpcServerBuilder.h"
 
 namespace Imagine_Rpc
 {
@@ -18,11 +17,11 @@ class RpcZooKeeperConnection : public RpcConnection
 
     ~RpcZooKeeperConnection();
 
-    Imagine_Muduo::Connection* Create(std::shared_ptr<Imagine_Muduo::Channel> channel);
+    Imagine_Muduo::Connection* Create(const std::shared_ptr<Imagine_Muduo::Channel>& channel) const;
 
-    void DefaultReadCallback(Imagine_Muduo::Connection* conn);
+    void DefaultReadCallback(Imagine_Muduo::Connection* conn) const;
 
-    void DefaultWriteCallback(Imagine_Muduo::Connection* conn);
+    void DefaultWriteCallback(Imagine_Muduo::Connection* conn) const;
 };
 
 } // namespace Imagine_Rpc

@@ -1,5 +1,7 @@
 #include "Imagine_Rpc/ServiceDescriptor.h"
 
+#include "Imagine_Rpc/MethodHandler.h"
+
 namespace Imagine_Rpc
 {
 
@@ -13,9 +15,12 @@ ServiceDescriptor::ServiceDescriptor(const std::string& service_name) : service_
 
 ServiceDescriptor::~ServiceDescriptor()
 {
+    for (auto it = handler_map_.begin(); it != handler_map_.end(); it++) {
+        delete it->second;
+    }
 }
 
-const std::string& ServiceDescriptor::GetServiceName() const
+std::string ServiceDescriptor::GetServiceName() const
 {
     return service_name_;
 }
@@ -25,12 +30,12 @@ const std::unordered_map<std::string, MethodHandler*>& ServiceDescriptor::GetMet
     return handler_map_;
 }
 
-void ServiceDescriptor::RegisterMethods(std::string& method_name, MethodHandler* handler)
+void ServiceDescriptor::RegisterMethods(const std::string& method_name, MethodHandler* handler)
 {
     handler_map_.insert(std::make_pair(method_name, handler));
 }
 
-const MethodHandler* ServiceDescriptor::FindMethodHandler(std::string method_name) const
+const MethodHandler* ServiceDescriptor::FindMethodHandler(const std::string& method_name) const
 {
     auto it = handler_map_.find(method_name);
     if (it == handler_map_.end()) {

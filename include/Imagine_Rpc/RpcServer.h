@@ -1,13 +1,12 @@
 #ifndef IMAGINE_RPC_RPCSERVER_H
 #define IMAGINE_RPC_RPCSERVER_H
 
-#include "Imagine_Time/Timer.h"
-#include "common_definition.h"
-#include "Builder.h"
+#include "common_typename.h"
 
 namespace Imagine_Rpc
 {
 
+class Service;
 class RpcServerBuilder;
 
 class RpcServer
@@ -23,13 +22,14 @@ class RpcServer
 
     ~RpcServer();
 
-    RpcServer* const Start();
+    RpcServer* Start() const;
 
-    RpcServer* const RegisterService(Service* service);
+    // Service由用户传递进来, 也由用户自己释放空间
+    const RpcServer* RegisterService(Service* service) const;
 
-    RpcServer* const DeregisterService(Service* service);
+    RpcServer* DeregisterService(Service* service);
 
-    long long SetTimer(Imagine_Tool::TimerCallback timer_callback, double interval, double delay = 0.0);
+    long long SetTimer(TimerCallback timer_callback, double interval, double delay = 0.0);
 
     RpcServer* RemoveTimer(long long timerfd);
 

@@ -2,10 +2,6 @@
 #define IMAGINE_RPC_RPCSTUB_H
 
 #include "Stub.h"
-#include "RpcUtil.h"
-#include "Context.pb.h"
-#include "InternalMessage.pb.h"
-#include "TransportDecoder.h"
 
 namespace Imagine_Rpc
 {
@@ -14,9 +10,9 @@ template <class RequestMessageType, class ResponseMessageType>
 class RpcStub : public Stub
 {
  public:
-    RpcStub(std::string profile_name, const std::string& service_name, const std::string& method_name);
+    RpcStub(const std::string& profile_name, const std::string& service_name, const std::string& method_name);
 
-    RpcStub(YAML::Node config, const std::string& service_name, const std::string& method_name);
+    RpcStub(const YAML::Node& config, const std::string& service_name, const std::string& method_name);
 
     ~RpcStub();
 
@@ -27,12 +23,12 @@ class RpcStub : public Stub
 };
 
 template <class RequestMessageType, class ResponseMessageType>
-RpcStub<RequestMessageType, ResponseMessageType>::RpcStub(std::string profile_name, const std::string& service_name, const std::string& method_name) : Stub(profile_name, service_name, method_name, new RequestMessageType(), new ResponseMessageType())
+RpcStub<RequestMessageType, ResponseMessageType>::RpcStub(const std::string& profile_name, const std::string& service_name, const std::string& method_name) : Stub(profile_name, service_name, method_name, new RequestMessageType(), new ResponseMessageType())
 {
 }
 
 template <class RequestMessageType, class ResponseMessageType>
-RpcStub<RequestMessageType, ResponseMessageType>::RpcStub(YAML::Node config, const std::string& service_name, const std::string& method_name) : Stub(config, service_name, method_name, new RequestMessageType(), new ResponseMessageType())
+RpcStub<RequestMessageType, ResponseMessageType>::RpcStub(const YAML::Node& config, const std::string& service_name, const std::string& method_name) : Stub(config, service_name, method_name, new RequestMessageType(), new ResponseMessageType())
 {
 }
 

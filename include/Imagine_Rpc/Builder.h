@@ -1,13 +1,14 @@
 #ifndef IMAGINE_RPC_BUILDER_H
 #define IMAGINE_RPC_BUILDER_H
 
-#include "Service.h"
-#include "TransportDecoder.h"
-
+#include <mutex>
 #include <unordered_map>
 
 namespace Imagine_Rpc
 {
+
+class Service;
+class ServiceDescriptor;
 
 // as interface
 class Builder
@@ -17,11 +18,11 @@ class Builder
 
     virtual ~Builder();
 
-    Builder* const RegisterService(Service* service);
+    Builder* RegisterService(const Service* service);
 
-    Builder* const DeregisterService(std::string service_name);
+    Builder* DeregisterService(const std::string& service_name);
 
-    const ServiceDescriptor* FindServiceDescriptor(std::string service_name);
+    const ServiceDescriptor* FindServiceDescriptor(const std::string& service_name) const;
 
  private:
     std::unordered_map<std::string, const ServiceDescriptor*> service_map_;

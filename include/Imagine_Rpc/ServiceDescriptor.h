@@ -1,13 +1,13 @@
 #ifndef IMAGINE_RPC_SERVICEDESCRIPTOR_H
 #define IMAGINE_RPC_SERVICEDESCRIPTOR_H
 
-#include "MethodHandler.h"
-
 #include <string>
 #include <unordered_map>
 
 namespace Imagine_Rpc
 {
+
+class MethodHandler;
 
 class ServiceDescriptor
 {
@@ -18,13 +18,13 @@ class ServiceDescriptor
 
     ~ServiceDescriptor();
 
-    const std::string& GetServiceName() const;
+   std::string GetServiceName() const;
 
     const std::unordered_map<std::string, MethodHandler*>& GetMethodHandlers() const;
 
-    void RegisterMethods(std::string& method_name, MethodHandler* handler_);
+    void RegisterMethods(const std::string& method_name, MethodHandler* handler_);
 
-    const MethodHandler* FindMethodHandler(std::string method_name) const;
+    const MethodHandler* FindMethodHandler(const std::string& method_name) const;
 
  private:
     std::string service_name_;

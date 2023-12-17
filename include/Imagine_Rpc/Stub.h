@@ -1,38 +1,41 @@
 #ifndef IMAGINE_RPC_STUB_H
 #define IMAGINE_RPC_STUB_H
 
-#include "Imagine_Log/Logger.h"
-#include "common_definition.h"
+#include "common_typename.h"
+
+#include <unistd.h>
 
 namespace Imagine_Rpc
 {
+
+enum class Status;
 
 class Stub
 {
  public:
     Stub();
 
-    Stub(std::string profile_name);
+    Stub(const std::string& profile_name);
 
-    Stub(YAML::Node config);
+    Stub(const YAML::Node& config);
 
     Stub(const Stub& stub);
 
     ~Stub();
 
-    void Init(std::string profile_name);
+    void Init(const std::string& profile_name);
 
-    void Init(YAML::Node config);
+    void Init(const YAML::Node& config);
 
     Stub* SearchNewServer();
 
     Stub* ConnectServer();
 
-    Stub* CloseConnection();
+    const Stub* CloseConnection() const;
 
     Status Call(RpcMessage* request_msg, RpcMessage* response_msg);
 
-    Status CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg);
+    Status CallConnectServer(RpcMessage* request_msg, RpcMessage* response_msg) const;
 
     Stub* SetServerIp(const std::string& server_ip);
 
@@ -51,24 +54,19 @@ class Stub
     int GetSockfd() const;
 
  protected:
-    std::string server_ip_;
-    std::string server_port_;
-    std::string zookeeper_ip_;
-    std::string zookeeper_port_;
-    std::string service_name_;
-    std::string method_name_;
-    std::string log_name_;
-    std::string log_path_;
-    size_t max_log_file_size_;
-    bool async_log_;
-    bool singleton_log_mode_;
-    std::string log_title_;
-    bool log_with_timestamp_;
+    // 配置文件参数
+    std::string server_ip_;         // server的IP
+    std::string server_port_;       // server的Port
+    std::string zookeeper_ip_;      // ZK的IP
+    std::string zookeeper_port_;    // ZK的Port
+    std::string service_name_;      // 暂时不支持在配置文件中读取(其它类的配置文件无此项, 怕遗忘造成core)
+    std::string method_name_;       // 暂时不支持在配置文件中读取(其它类的配置文件无此项, 怕遗忘造成core)
+    bool singleton_log_mode_;       // 日志模式(目前仅支持单例)
 
-    Imagine_Tool::Logger* logger_;
+    Logger* logger_;                // 日志对象
 
  private:
-    int sockfd_;
+    int sockfd_;                    // 建立连接后的socket(支持建立连接后直接使用其进行通信)
 };
 
 } // namespace Imagine_Rpc
