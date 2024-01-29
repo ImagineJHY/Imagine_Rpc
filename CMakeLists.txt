@@ -4,10 +4,8 @@ project(IMAGINE_RPC)
 option(BUILD_RPC_SERVICE_GENERATOR "Build RpcServiceGenerator" OFF)
 option(BUILD_RPC "Build RPC" OFF)
 
-message("[Imagine Rpc]: Starting Imagine_Rpc lib building, lib name is ${PROJECT_NAME}...")
 if(NOT DEFINED IMAGINE_TARGET_LIB)
 
-    message("[Imagine Rpc]: IMAGINE_TARGET_LIB Is Not Defined")
     set(IMAGINE_TARGET_LIB "Imagine_Rpc")
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -g -O0")
@@ -22,6 +20,8 @@ if(NOT DEFINED IMAGINE_TARGET_LIB)
     set(R "${Esc}[1;31m")
     set(G "${Esc}[0;32m")
     set(E "${Esc}[m")
+
+    message("[Imagine Rpc]: Starting Imagine_Rpc lib building, lib name is ${PROJECT_NAME}...")
 
     set(IS_MAKE_PROJECT false)
     set(IMAGINE_SYSTEM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/Imagine_System)
@@ -50,9 +50,11 @@ file(GLOB IMAGINE_RPC_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CUR
 add_library(imagine_rpc SHARED ${IMAGINE_RPC_SRC_LIST})
 
 if (BUILD_RPC)
+    message("11111111111111111")
     target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${IMAGINE_TOOL_DIR}/Imagine_Log/include ${IMAGINE_TOOL_DIR}/Imagine_Time/include ${IMAGINE_LIB_WORKER_DIR}/Imagine_ZooKeeper/include ${IMAGINE_LIB_WORKER_DIR}/Imagine_Muduo/include ${IMAGINE_TOOL_DIR}/thirdparty/yaml-cpp/include)
     target_link_libraries(imagine_rpc ${LIBRARY_OUTPUT_PATH})
 else()
+    message("2222222222222222")
     message("${G}[Imagine Rpc]: Building RPC and thirdparty${E}")
     target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
     target_link_libraries(imagine_rpc protobuf imagine_zookeeper)

@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build rpc
 
 system_file_name=./thirdparty/Imagine_System
 tool_file_name=./thirdparty/Imagine_Tool
