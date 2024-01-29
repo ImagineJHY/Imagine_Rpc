@@ -50,11 +50,9 @@ file(GLOB IMAGINE_RPC_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CUR
 add_library(imagine_rpc SHARED ${IMAGINE_RPC_SRC_LIST})
 
 if (BUILD_RPC)
-    message("11111111111111111")
     target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${IMAGINE_TOOL_DIR}/Imagine_Log/include ${IMAGINE_TOOL_DIR}/Imagine_Time/include ${IMAGINE_LIB_WORKER_DIR}/Imagine_ZooKeeper/include ${IMAGINE_LIB_WORKER_DIR}/Imagine_Muduo/include ${IMAGINE_TOOL_DIR}/thirdparty/yaml-cpp/include)
     target_link_libraries(imagine_rpc ${LIBRARY_OUTPUT_PATH})
 else()
-    message("2222222222222222")
     message("${G}[Imagine Rpc]: Building RPC and thirdparty${E}")
     target_include_directories(imagine_rpc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
     target_link_libraries(imagine_rpc protobuf imagine_zookeeper)

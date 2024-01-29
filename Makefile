@@ -24,7 +24,7 @@ endif
 	cd ${tool_file_name} && make prepare
 
 build:
-	cd build && cmake .. && make imagine_rpc
+	cd build && cmake -DBUILD_RPC=OFF .. && make imagine_rpc
 
 generator:
 	cd build && cmake -DBUILD_RPC_SERVICE_GENERATOR=ON .. && make imagine_rpc_service_generator
