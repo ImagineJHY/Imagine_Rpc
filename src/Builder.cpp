@@ -28,7 +28,7 @@ Builder* Builder::DeregisterService(const std::string& service_name)
 {
     std::unique_lock<std::mutex> lock(service_map_lock_);
     if (service_map_.find(service_name) == service_map_.end()) {
-        IMAGINE_RPC_LOG("NO SERVICE NAMED %s is Registetered!", service_name.c_str());
+        IMAGINE_RPC_LOG_INFO("NO SERVICE NAMED %s is Registetered!", service_name.c_str());
     }
     service_map_.erase(service_map_.find(service_name));
 

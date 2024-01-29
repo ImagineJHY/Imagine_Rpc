@@ -592,6 +592,19 @@ imagine_log/fast:
 .PHONY : imagine_log/fast
 
 #=============================================================================
+# Target rules for targets named imagine_statemachine
+
+# Build rule for target.
+imagine_statemachine: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imagine_statemachine
+.PHONY : imagine_statemachine
+
+# fast build rule for target.
+imagine_statemachine/fast:
+	$(MAKE) -f thirdparty/Imagine_Tool/Imagine_StateMachine/CMakeFiles/imagine_statemachine.dir/build.make thirdparty/Imagine_Tool/Imagine_StateMachine/CMakeFiles/imagine_statemachine.dir/build
+.PHONY : imagine_statemachine/fast
+
+#=============================================================================
 # Target rules for targets named imagine_muduo
 
 # Build rule for target.
@@ -616,6 +629,19 @@ imagine_zookeeper: cmake_check_build_system
 imagine_zookeeper/fast:
 	$(MAKE) -f thirdparty/Imagine_System/worker/Imagine_ZooKeeper/CMakeFiles/imagine_zookeeper.dir/build.make thirdparty/Imagine_System/worker/Imagine_ZooKeeper/CMakeFiles/imagine_zookeeper.dir/build
 .PHONY : imagine_zookeeper/fast
+
+#=============================================================================
+# Target rules for targets named imagine_rpc_service_generator
+
+# Build rule for target.
+imagine_rpc_service_generator: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imagine_rpc_service_generator
+.PHONY : imagine_rpc_service_generator
+
+# fast build rule for target.
+imagine_rpc_service_generator/fast:
+	$(MAKE) -f ServiceGenerator/CMakeFiles/imagine_rpc_service_generator.dir/build.make ServiceGenerator/CMakeFiles/imagine_rpc_service_generator.dir/build
+.PHONY : imagine_rpc_service_generator/fast
 
 src/Builder.o: src/Builder.cpp.o
 
@@ -1202,8 +1228,10 @@ help:
 	@echo "... yaml-cpp-parse"
 	@echo "... imagine_time"
 	@echo "... imagine_log"
+	@echo "... imagine_statemachine"
 	@echo "... imagine_muduo"
 	@echo "... imagine_zookeeper"
+	@echo "... imagine_rpc_service_generator"
 	@echo "... src/Builder.o"
 	@echo "... src/Builder.i"
 	@echo "... src/Builder.s"

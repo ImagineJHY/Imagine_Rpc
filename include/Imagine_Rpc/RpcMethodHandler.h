@@ -45,12 +45,12 @@ Status RpcMethodHandler<RequestMessageType, ResponseMessageType>::HandleMethod(C
 {
     RequestMessageType* request_msg_type = dynamic_cast<RequestMessageType*>(request_msg);
     if (request_msg_type == nullptr) {
-        IMAGINE_RPC_LOG("Request Message Type Error!");
+        IMAGINE_RPC_LOG_INFO("Request Message Type Error!");
         throw std::exception();
     }
     ResponseMessageType* response_msg_type = dynamic_cast<ResponseMessageType*>(response_msg);
     if (response_msg_type == nullptr) {
-        IMAGINE_RPC_LOG("Response Message Type Error!");
+        IMAGINE_RPC_LOG_INFO("Response Message Type Error!");
         throw std::exception();
     }
 

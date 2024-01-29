@@ -25,5 +25,12 @@ endif
 
 build:
 	cd build && cmake .. && make imagine_rpc
+
+generator:
+	cd build && cmake -DBUILD_RPC_SERVICE_GENERATOR=ON .. && make imagine_rpc_service_generator
+
+rpc:
+	cd build && cmake -DBUILD_RPC=ON .. && make imagine_rpc
+
 clean:
 	cd build && make clean
