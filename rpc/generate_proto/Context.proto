@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package Imagine_Rpc;
+
+message Context {
+	string service_name_ = 1;
+	string method_name_ = 2;
+	uint64 message_size_ = 3;
+	string send_ip_ = 4;
+	string send_port_ = 5;
+	string recv_ip_ = 6;
+	string recv_port_ = 7;
+	int32 sockfd_ = 8;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "test_import2.b.proto";
+
+package import_package2;
+
+message import2responsemsg {
+}
+message import2requestmsg {
+}

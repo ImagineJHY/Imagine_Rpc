@@ -1,0 +1,11 @@
+service_file: ../rpc/Context.rpc
+proto_file_path: ../rpc/generate_proto
+cxx_output_path: ../rpc/generate_code
+log_name: imagine_rpc_servicegenerator_log.log
+log_path: /home/imagine/MIT6824/Imagine_Rpc/test/log/
+max_log_file_size: 104857600
+async_log: false
+singleton_log_mode: true
+log_title: Imagine RPC ServiceGenerator
+log_with_timestamp: true
+max_channel_num: 10000
