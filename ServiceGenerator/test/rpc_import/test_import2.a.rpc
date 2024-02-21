@@ -1,0 +1,11 @@
+syntax = "proto3"
+;
+package import_package2;
+import "../import_import/test_import2.b.rpc";
+message import2requestmsg{
+
+}
+
+message import2responsemsg{
+    
+}

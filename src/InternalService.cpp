@@ -40,7 +40,7 @@ Status InternalService::InternalMessageProcessor(Context* context, InternalMessa
             break;
 
         default:
-            IMAGINE_RPC_LOG("Bad Request!");
+            IMAGINE_RPC_LOG_INFO("Bad Request!");
             throw std::exception();
             break;
     }
@@ -62,7 +62,7 @@ Status InternalService::InternalClientMessageProcessor(Context* context, Interna
             break;
         
         default :
-            IMAGINE_RPC_LOG("NO Function Named %s is Found!", request->method_name_());
+            IMAGINE_RPC_LOG_INFO("NO Function Named %s is Found!", request->method_name_());
             throw std::exception();
             break;
     }
@@ -77,34 +77,34 @@ Status InternalService::InternalServerMessageProcessor(Context* context, Interna
         case InternalMessage_Request::InternalMessage_Request_Register :
             if (builder_->Register(RpcUtil::GenerateRegisterName(request->service_name_(), request->method_name_()), request->server_ip_(), request->server_port_(), context->sockfd_())) {
                 // 注册成功
-                IMAGINE_RPC_LOG("%s:%s Register Success!", context->send_ip_().c_str(), context->send_port_().c_str());
+                IMAGINE_RPC_LOG_INFO("%s:%s Register Success!", context->send_ip_().c_str(), context->send_port_().c_str());
             } else {
                 // 注册失败
-                IMAGINE_RPC_LOG("%s:%s Register Fail!", context->send_ip_().c_str(), context->send_port_().c_str());
+                IMAGINE_RPC_LOG_INFO("%s:%s Register Fail!", context->send_ip_().c_str(), context->send_port_().c_str());
             }
             break;
         
         case InternalMessage_Request::InternalMessage_Request_DeRegister :
             if (builder_->DeRegister(RpcUtil::GenerateRegisterName(request->service_name_(), request->method_name_()), context->send_ip_(), context->send_port_(), context->sockfd_())) {
                 // 注销成功
-                IMAGINE_RPC_LOG("%s:%s DeRegister Success!", context->send_ip_().c_str(), context->send_port_().c_str());
+                IMAGINE_RPC_LOG_INFO("%s:%s DeRegister Success!", context->send_ip_().c_str(), context->send_port_().c_str());
             } else {
                 // 注销失败
-                IMAGINE_RPC_LOG("%s:%s DeRegister Fail!", context->send_ip_().c_str(), context->send_port_().c_str());
+                IMAGINE_RPC_LOG_INFO("%s:%s DeRegister Fail!", context->send_ip_().c_str(), context->send_port_().c_str());
             }
             break;
         
         case InternalMessage_Request::InternalMessage_Request_Heartbeat :
             if (builder_->HeartBeatProcessor(context->sockfd_())) {
-                IMAGINE_RPC_LOG("%s:%s HeartBeat Success!", context->send_ip_().c_str(), context->send_port_().c_str());
+                IMAGINE_RPC_LOG_INFO("%s:%s HeartBeat Success!", context->send_ip_().c_str(), context->send_port_().c_str());
             } else {
-                IMAGINE_RPC_LOG("Bad HeartBeat Request!");
+                IMAGINE_RPC_LOG_INFO("Bad HeartBeat Request!");
                 throw std::exception();
             }
             break;
         
         default:
-            IMAGINE_RPC_LOG("%s:%s Bad Request!", context->send_ip_().c_str(), context->send_port_().c_str());
+            IMAGINE_RPC_LOG_INFO("%s:%s Bad Request!", context->send_ip_().c_str(), context->send_port_().c_str());
             break;
     }
 

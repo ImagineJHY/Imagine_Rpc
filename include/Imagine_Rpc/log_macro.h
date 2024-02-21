@@ -9,12 +9,40 @@
 #define OPEN_IMAGINE_RPC_LOG
 
 #ifdef OPEN_IMAGINE_RPC_LOG
-#define IMAGINE_RPC_LOG(LOG_MESSAGE...) \
+
+#define IMAGINE_RPC_LOG_DEBUG(LOG_MESSAGE...) \
+    do { \
+        LOG_DEBUG(LOG_MESSAGE) \
+    } while(0)
+
+#define IMAGINE_RPC_LOG_WARN(LOG_MESSAGE...) \
+    do { \
+        LOG_WARN(LOG_MESSAGE) \
+    } while(0)
+
+#define IMAGINE_RPC_LOG_INFO(LOG_MESSAGE...) \
     do { \
         LOG_INFO(LOG_MESSAGE); \
     } while(0)
+
+#define IMAGINE_RPC_LOG_ERROR(LOG_MESSAGE...) \
+    do { \
+        LOG_DEBUG(LOG_MESSAGE) \
+    } while(0)
+
+#define IMAGINE_RPC_LOG_FATAL(LOG_MESSAGE...) \
+    do { \
+        LOG_DEBUG(LOG_MESSAGE) \
+    } while(0)
+
 #else
-#define IMAGINE_RPC_LOG(LOG_MESSAGE...) do { } while(0)
+
+#define IMAGINE_RPC_LOG_DEBUG(LOG_MESSAGE...) do { } while(0)
+#define IMAGINE_RPC_LOG_WARN(LOG_MESSAGE...) do { } while(0)
+#define IMAGINE_RPC_LOG_INFO(LOG_MESSAGE...) do { } while(0)
+#define IMAGINE_RPC_LOG_ERROR(LOG_MESSAGE...) do { } while(0)
+#define IMAGINE_RPC_LOG_FATAL(LOG_MESSAGE...) do { } while(0)
+
 #endif
 
 #endif

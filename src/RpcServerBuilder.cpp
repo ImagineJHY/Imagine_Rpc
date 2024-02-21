@@ -109,7 +109,7 @@ void RpcServerBuilder::SetDefaultTimerCallback()
 {
     timer_callback_ = [this](const RpcServerConnection* conn, double time_out)
     {
-        IMAGINE_RPC_LOG("this is RpcServer TimerCallback!");
+        IMAGINE_RPC_LOG_INFO("this is RpcServer TimerCallback!");
 
         long long last_request_time;
         if (!GetHeartNodeInfo(conn, last_request_time)) {
@@ -118,7 +118,7 @@ void RpcServerBuilder::SetDefaultTimerCallback()
 
         if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            IMAGINE_RPC_LOG("RpcServer Timer Set offline!");
+            IMAGINE_RPC_LOG_INFO("RpcServer Timer Set offline!");
             CloseConnection(conn->GetIp(), conn->GetPort());
             this->DeleteUser(conn);
             return;
@@ -192,7 +192,7 @@ long long RpcServerBuilder::GetHeartNodeLastRequestTime(const RpcServerConnectio
 
 void RpcServerBuilder::HeartBeatPacketSender(int sockfd)
 {
-    IMAGINE_RPC_LOG("Send HeartBeat Packet!");
+    IMAGINE_RPC_LOG_INFO("Send HeartBeat Packet!");
     Context request_context;
     Internal::InternalMessage request_msg;
     Context response_context;

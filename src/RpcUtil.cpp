@@ -94,7 +94,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, struct sockadd
         char buffer[1024];
         ret = read(sockfd, buffer, sizeof(buffer)); // Zookeeper返回函数IP+PORT,用\r\n分隔
         if (ret == 0) {
-            IMAGINE_RPC_LOG("111 Connection Close! errno is %d", errno);
+            IMAGINE_RPC_LOG_INFO("111 Connection Close! errno is %d", errno);
             close(sockfd);
             return "";
         }
@@ -111,9 +111,9 @@ std::string RpcUtil::Communicate(const std::string &send_content, struct sockadd
 std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, ConnectionStatus& conn_status, bool wait_recv)
 {
     int ret = write(*sockfd, &send_content[0], send_content.size());
-    IMAGINE_RPC_LOG("Send Content %s to peer, ret is %d", send_content.c_str(), ret);
+    IMAGINE_RPC_LOG_INFO("Send Content %s to peer, ret is %d", send_content.c_str(), ret);
     if (ret == -1) {
-        IMAGINE_RPC_LOG("Communnicate write exception!, errno is %d", errno);
+        IMAGINE_RPC_LOG_INFO("Communnicate write exception!, errno is %d", errno);
         throw std::exception();
     }
     conn_status = ConnectionStatus::Ok;
@@ -128,7 +128,7 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
 
         ret = read(*sockfd, buffer, sizeof(buffer));
         if (ret == 0) {
-            IMAGINE_RPC_LOG("222 Connection Close! errno is %d", errno);
+            IMAGINE_RPC_LOG_INFO("222 Connection Close! errno is %d", errno);
             conn_status = ConnectionStatus::Close;
             return "";
         }
@@ -136,13 +136,13 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
         //     switch (errno)
         //     {
         //     case 104 :
-        //         IMAGINE_RPC_LOG("Server Is busy, Please Try Again!");
+        //         IMAGINE_RPC_LOG_INFO("Server Is busy, Please Try Again!");
         //         conn_status = ConnectionStatus::ReadAgain;
         //         return "";
         //         break;
             
         //     default:
-        //         IMAGINE_RPC_LOG("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
+        //         IMAGINE_RPC_LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
         //         throw std::exception();
         //         break;
         //     }
@@ -151,9 +151,9 @@ std::string RpcUtil::Communicate(const std::string &send_content, int *sockfd, C
             recv_content.push_back(buffer[i]);
         }
         if (ret == -1) {
-            IMAGINE_RPC_LOG("ret is -1, ERRORNO is %d, send content is %s", errno, send_content.c_str());
+            IMAGINE_RPC_LOG_INFO("ret is -1, ERRORNO is %d, send content is %s", errno, send_content.c_str());
         }
-        IMAGINE_RPC_LOG("Recv Content %s to peer, content size is %d", recv_content.c_str(), ret);
+        IMAGINE_RPC_LOG_INFO("Recv Content %s to peer, content size is %d", recv_content.c_str(), ret);
     }
 
     return recv_content;
@@ -173,13 +173,13 @@ bool RpcUtil::Connect(const std::string &ip, const std::string &port, int *sockf
 
     ret = connect(*sockfd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret == -1) {
-        IMAGINE_RPC_LOG("Connect Exception, ERRNO Is %d", errno);
+        IMAGINE_RPC_LOG_INFO("Connect Exception, ERRNO Is %d", errno);
         throw std::exception();
     } else {
-        IMAGINE_RPC_LOG("Connect Success!");
+        IMAGINE_RPC_LOG_INFO("Connect Success!");
     }
 
-    IMAGINE_RPC_LOG("connection success!");
+    IMAGINE_RPC_LOG_INFO("connection success!");
 
     return true;
 }
@@ -244,7 +244,7 @@ bool RpcUtil::Connect(const Context* context, int* sockfd)
         throw std::exception();
     }
 
-    IMAGINE_RPC_LOG("connection success!");
+    IMAGINE_RPC_LOG_INFO("connection success!");
 
     return true;
 }
@@ -259,7 +259,7 @@ std::string RpcUtil::Readfd(const int* sockfd, ConnectionStatus& conn_status)
         char buf[1024];
         int ret = read(*sockfd, buf, 1024);
         if (ret == 0) {
-            IMAGINE_RPC_LOG("222 Connection Close! errno is %d", errno);
+            IMAGINE_RPC_LOG_INFO("222 Connection Close! errno is %d", errno);
             conn_status = ConnectionStatus::Close;
             return "";
         }
@@ -267,13 +267,13 @@ std::string RpcUtil::Readfd(const int* sockfd, ConnectionStatus& conn_status)
         //     switch (errno)
         //     {
         //     case 104 :
-        //         IMAGINE_RPC_LOG("Server Is busy, Please Try Again!");
+        //         IMAGINE_RPC_LOG_INFO("Server Is busy, Please Try Again!");
         //         conn_status = ConnectionStatus::ReadAgain;
         //         return "";
         //         break;
             
         //     default:
-        //         IMAGINE_RPC_LOG("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
+        //         IMAGINE_RPC_LOG_INFO("Ret Is -1, ERRNO Is %d, Please Add Code To Process it!", errno);
         //         throw std::exception();
         //         break;
         //     }
@@ -300,10 +300,10 @@ void RpcUtil::SendMessage(const Context* request_context, const RpcMessage* requ
     recv_content = Communicate(send_content, &sockfd, conn_status);
     while(conn_status == ConnectionStatus::ReadAgain || !DeserializeMessage(recv_content, response_context, response_msg)) {
         if (conn_status == ConnectionStatus::Close) {
-            IMAGINE_RPC_LOG("Connection Close");
+            IMAGINE_RPC_LOG_INFO("Connection Close");
             return;
         } else if (conn_status == ConnectionStatus::ReadAgain) {
-            IMAGINE_RPC_LOG("Deserialize Recv Message Fail, Read Again!");
+            IMAGINE_RPC_LOG_INFO("Deserialize Recv Message Fail, Read Again!");
             recv_content += Readfd(&sockfd, conn_status);
         }
     }
@@ -320,13 +320,13 @@ void RpcUtil::SerializeMessage(const Context* context, const RpcMessage* msg, st
 {
     MessageHeader header(context->ByteSize(), msg->ByteSize());
     if (!header.AppendToString(content)) {
-        IMAGINE_RPC_LOG("Serialize Header Error");
+        IMAGINE_RPC_LOG_INFO("Serialize Header Error");
     }
     if (!context->AppendToString(&content)) {
-        IMAGINE_RPC_LOG("Serialize Context Error");
+        IMAGINE_RPC_LOG_INFO("Serialize Context Error");
     }
     if (!msg->AppendPartialToString(&content)) {
-        IMAGINE_RPC_LOG("Serialize Message Error");
+        IMAGINE_RPC_LOG_INFO("Serialize Message Error");
     }
 }
 

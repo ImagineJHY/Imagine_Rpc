@@ -1,0 +1,100 @@
+syntax = "proto3"
+;
+import "test_import.rpc";
+//import "test_import2.rpc";
+import "/home/imagine/MIT6824/Imagine_Rpc/ServiceGenerator/test/test_import2.rpc";
+import "rpc_import/test_import.a.rpc";
+import "rpc_import/test_import2.a.rpc";
+message Imagine_Rpc{
+    
+}
+enum aslkfj{
+    aaa = 0;
+}
+message TTTT{
+    //InternalMessage.AAAA tat = 1;
+    InternalMessage.Identity taaa = 2;
+}
+message AAAA{
+
+}
+//message message{
+    //message2.msg mm = 1;
+    //msg mm = 1;
+//}
+
+//message msg{
+
+//}
+package message1;
+message InternalMessage {
+    //message1.message kka = 391;
+    TTTT TTTT = 101003;
+    InternalMessage.a1.a2 kk = 33333;
+    message a1{
+        message a2{
+            message a3{
+                a2 kk =33;
+            }
+        }
+    }
+    enum Identity{
+        Client = 0;
+        Server = 1;
+        ZooKeeper = 2;
+    }
+    enum Request{
+        Register = 00;
+        DeRegister = 1;
+        Heartbeat = 2;
+        Search = 3;
+        Response = 4;
+    }
+    AAAA cbcbcbcbcbcbcbc = 1000;
+    //message AAAA {
+    //    InternalMessage.AAAA aaaa = 1;
+    //}
+    //InternalMessage.AAAA ASDLKFJ = 222;
+    Identity send_identity_ = 1;                // 发送者身份
+    Identity recv_identity_ = 2;                // 接收者身份
+    string service_name_ = 3;                   // register/deregister: 注册的服务名|____________|search: 查找的服务名
+    string method_name_ = 4;                    // register/deregister: 注册的方法名|____________|search: 查找的方法名
+    Request request_type_ = 6;                  // 请求类型
+    string server_ip_ = 9;                      // server的ip
+    string server_port_ = 10;                   // server的port
+    //test ttt = 100;
+    TTTT ABCDEFG = 100000;
+    InternalMessage.Identity FFFFFFFFFF= 3333;
+}
+
+//enum test {
+    //aaa = 0;
+//}
+message c1{
+
+}
+
+message c{
+    message c1{
+        message c2{
+            message c3{
+                message c3 {
+
+                }
+            }
+            c1.c2 kk = 1;
+        }
+    }
+}
+
+RpcService FormatService {
+    RpcMethod FormatMethod<InternalMessage, InternalMessage>;
+}
+
+RpcService ImportService {
+    RpcMethod ImportMethod<import_package.request_msg, .import_package.response_msg>;
+}
+
+RpcService Import2Service {
+    RpcMethod Import2Method<import2requestmsg, .import2responsemsg>;
+}

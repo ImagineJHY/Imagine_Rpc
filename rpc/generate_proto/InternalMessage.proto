@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package Imagine_Rpc.Internal;
+
+message InternalMessage {
+	enum Request {
+		Register = 0;
+		DeRegister = 1;
+		Heartbeat = 2;
+		Search = 3;
+		Response = 4;
+	}
+	enum Identity {
+		Client = 0;
+		Server = 1;
+		ZooKeeper = 2;
+	}
+	Identity send_identity_ = 1;
+	Identity recv_identity_ = 2;
+	string service_name_ = 3;
+	string method_name_ = 4;
+	Request request_type_ = 6;
+	string server_ip_ = 9;
+	string server_port_ = 10;
+}

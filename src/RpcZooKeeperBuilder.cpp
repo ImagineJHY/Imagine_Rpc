@@ -42,24 +42,24 @@ void RpcZooKeeperBuilder::SetDefaultTimerCallback()
 {
     timer_callback_ = [this](int sockfd, double time_out)
     {
-        IMAGINE_RPC_LOG("RpcZooKeeper TimerCallback!");
+        IMAGINE_RPC_LOG_INFO("RpcZooKeeper TimerCallback!");
 
         std::string cluster_name;
         long long last_request_time;
         std::pair<std::string, std::string> stat;
         if (!GetHeartNodeInfo(sockfd, cluster_name, last_request_time, stat)) {
-            IMAGINE_RPC_LOG("Timer Removed already!");
+            IMAGINE_RPC_LOG_INFO("Timer Removed already!");
             return;
         }
 
         if (TimeUtil::GetNow() > TimeUtil::MicroSecondsAddSeconds(last_request_time, time_out)) {
             // 已过期
-            IMAGINE_RPC_LOG("RpcZooKeeper Timer Set offline!");
+            IMAGINE_RPC_LOG_INFO("RpcZooKeeper Timer Set offline!");
             // this->loop_->Closefd(sockfd);
             DeRegister(cluster_name, stat.first, stat.second, sockfd);
             return;
         } else {
-            IMAGINE_RPC_LOG("Timer keep going!");
+            IMAGINE_RPC_LOG_INFO("Timer keep going!");
             // 未过期,忽略
         }
     };
