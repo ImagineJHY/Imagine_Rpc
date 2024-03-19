@@ -6,7 +6,7 @@
 #include "Imagine_Log/Imagine_Log.h"
 
 // 内部日志开关
-#define OPEN_IMAGINE_RPC_LOG
+// #define OPEN_IMAGINE_RPC_LOG
 
 #ifdef OPEN_IMAGINE_RPC_LOG
 
